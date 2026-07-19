@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { ReactNode } from "react"
 import {
+  FormAnswers,
   FormBuilder,
   FormRenderer,
   validateForm,
@@ -14,45 +15,87 @@ const initialFields: FormField[] = [
     id: "nome",
     order: 1,
     type: "text",
-    label: "Como podemos chamar você?",
-    placeholder: "Digite seu nome",
-    description: "Use o nome pelo qual você prefere ser chamado.",
-    maxlength: 80,
+    label: "Nome completo",
+    placeholder: "Digite seu nome completo",
+    description: "Informe como você gostaria de ser identificado.",
+    maxlength: 100,
     required: true,
   },
   {
-    id: "documento",
+    id: "email",
     order: 2,
-    type: "cpf",
-    label: "CPF",
-    placeholder: "000.000.000-00",
+    type: "text",
+    label: "E-mail",
+    placeholder: "voce@exemplo.com",
+    description: "Usaremos este endereço apenas para entrar em contato.",
+    maxlength: 120,
+    required: true,
     sensitive: true,
   },
   {
-    id: "assunto",
+    id: "data",
     order: 3,
+    type: "date",
+    label: "Data de referência",
+  },
+  {
+    id: "quantidade",
+    order: 4,
+    type: "number",
+    label: "Quantidade",
+    description: "Escolha um valor entre 1 e 20.",
+    placeholder: "Digite uma quantidade",
+    min: 1,
+    max: 20,
+  },
+  {
+    id: "categoria",
+    order: 5,
     type: "select",
-    label: "Assunto",
-    placeholder: "Escolha uma opção",
+    label: "Categoria",
+    placeholder: "Selecione uma categoria",
     required: true,
     formularioCampoOpcao: [
-      { order: 1, value: "Iluminação pública", selected: true },
-      { order: 2, value: "Limpeza urbana" },
-      { order: 3, value: "Trânsito" },
+      { order: 1, value: "Geral", selected: true },
+      { order: 2, value: "Pessoal" },
+      { order: 3, value: "Profissional" },
     ],
   },
   {
-    id: "detalhes",
-    order: 4,
-    type: "textarea",
-    label: "Conte o que aconteceu",
-    placeholder: "Descreva sua solicitação...",
-    maxlength: 500,
+    id: "contato",
+    order: 6,
+    type: "radio-group",
+    label: "Preferência de contato",
     required: true,
+    formularioCampoOpcao: [
+      { order: 1, value: "E-mail", selected: true },
+      { order: 2, value: "Telefone" },
+      { order: 3, value: "Sem preferência" },
+    ],
+  },
+  {
+    id: "interesses",
+    order: 7,
+    type: "checkbox-group",
+    label: "Áreas de interesse",
+    formularioCampoOpcao: [
+      { order: 1, value: "Tecnologia" },
+      { order: 2, value: "Design" },
+      { order: 3, value: "Negócios" },
+      { order: 4, value: "Educação" },
+    ],
+  },
+  {
+    id: "observacoes",
+    order: 8,
+    type: "textarea",
+    label: "Observações",
+    placeholder: "Adicione outras informações que considerar relevantes...",
+    maxlength: 500,
   },
 ]
 
-type Tab = "builder" | "preview" | "json"
+type Tab = "builder" | "preview" | "answers" | "json"
 type Theme = "light" | "dark"
 
 function DemoIcon({ children }: { children: ReactNode }) {
@@ -122,7 +165,6 @@ export function App() {
 
   const showTab = (nextTab: Tab) => {
     setTab(nextTab)
-    setSubmitted(null)
   }
 
   useEffect(() => {
@@ -140,7 +182,8 @@ export function App() {
         </div>
         <div className="demo-header">
           <p>
-            Construa a estrutura, teste o preenchimento e veja o JSON — tudo usando somente a API pública do componente.
+            Construa a estrutura, teste o preenchimento, confira as respostas e veja o JSON — tudo usando somente a API
+            pública dos componentes.
           </p>
           <div className="demo-header-actions">
             <button
@@ -168,8 +211,15 @@ export function App() {
         <button className={tab === "preview" ? "active" : ""} type="button" onClick={() => showTab("preview")}>
           <span>02</span> Formulário
         </button>
+        <button
+          className={tab === "answers" ? "active" : ""}
+          type="button"
+          onClick={() => showTab("answers")}
+        >
+          <span>03</span> Respostas
+        </button>
         <button className={tab === "json" ? "active" : ""} type="button" onClick={() => showTab("json")}>
-          <span>03</span> JSON
+          <span>04</span> JSON
         </button>
       </nav>
 
@@ -225,7 +275,12 @@ export function App() {
                 onSubmit={(nextAnswers) => {
                   const nextErrors = validateForm(nextAnswers, fields)
                   setErrors(nextErrors)
-                  setSubmitted(nextErrors.length === 0 ? nextAnswers : null)
+                  if (nextErrors.length === 0) {
+                    setSubmitted(nextAnswers)
+                    setTab("answers")
+                  } else {
+                    setSubmitted(null)
+                  }
                 }}
                 submitLabel="Enviar demonstração"
               />
@@ -236,6 +291,31 @@ export function App() {
                 </div>
               )}
             </div>
+          </section>
+        )}
+
+        {tab === "answers" && (
+          <section className="demo-answers-layout">
+            <div className="demo-section-heading">
+              <div>
+                <span className="demo-kicker">FormAnswers</span>
+                <h2>Respostas enviadas</h2>
+              </div>
+              <span>{submitted?.length ?? 0} respostas</span>
+            </div>
+            <p className="demo-answers-intro">
+              Este componente recebe diretamente o array produzido pelo <code>FormRenderer</code> e agrupa respostas
+              múltiplas por campo.
+            </p>
+            <div className="demo-answers-card">
+              <FormAnswers
+                answers={submitted ?? []}
+                emptyMessage="Preencha e envie o formulário na etapa anterior para exibir as respostas aqui."
+              />
+            </div>
+            <button className="demo-copy" type="button" onClick={() => showTab("preview")}>
+              {submitted ? "Editar respostas" : "Ir para o formulário"}
+            </button>
           </section>
         )}
 

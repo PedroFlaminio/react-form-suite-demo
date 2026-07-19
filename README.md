@@ -7,6 +7,7 @@ A interface permite:
 - montar e reordenar a estrutura de um formulário;
 - preencher uma prévia interativa;
 - validar campos obrigatórios com a API pública da biblioteca;
+- exibir as respostas efetivamente enviadas;
 - visualizar e copiar a definição atual em JSON;
 - alternar entre os temas claro e escuro.
 
