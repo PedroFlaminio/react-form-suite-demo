@@ -176,15 +176,16 @@ export function App() {
   return (
     <div className="demo-shell">
       <header>
-        <div>
-          <span className="demo-eyebrow">Pacote React + TypeScript</span>
-          <h1 className="demo-title">Formulários que começam simples.</h1>
-        </div>
+        <span className="demo-eyebrow">Pacote React + TypeScript</span>
+
         <div className="demo-header">
-          <p>
-            Construa a estrutura, teste o preenchimento, confira as respostas e veja o JSON — tudo usando somente a API
-            pública dos componentes.
-          </p>
+          <div>
+            <h1 className="demo-title">Formulários que começam simples.</h1>
+            <p>
+              Construa a estrutura, teste o preenchimento, confira as respostas e veja o JSON — tudo usando somente a
+              API pública dos componentes.
+            </p>{" "}
+          </div>
           <div className="demo-header-actions">
             <button
               className="demo-theme-toggle"
@@ -211,11 +212,7 @@ export function App() {
         <button className={tab === "preview" ? "active" : ""} type="button" onClick={() => showTab("preview")}>
           <span>02</span> Formulário
         </button>
-        <button
-          className={tab === "answers" ? "active" : ""}
-          type="button"
-          onClick={() => showTab("answers")}
-        >
+        <button className={tab === "answers" ? "active" : ""} type="button" onClick={() => showTab("answers")}>
           <span>03</span> Respostas
         </button>
         <button className={tab === "json" ? "active" : ""} type="button" onClick={() => showTab("json")}>

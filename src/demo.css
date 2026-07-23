@@ -65,14 +65,13 @@ button {
 
 .demo-header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 30px;
+  gap: 50px;
   padding: 0 4px 34px;
 }
 
 .demo-title {
-  max-width: 720px;
   margin: 7px 0 9px;
   color: var(--demo-heading);
   font-size: clamp(35px, 6vw, 62px);
@@ -81,7 +80,6 @@ button {
 }
 
 .demo-header p {
-  max-width: 680px;
   margin: 0;
   color: var(--demo-muted);
   font-size: 16px;
@@ -415,7 +413,7 @@ button {
 :root[data-theme="dark"] .rfb {
   --rfb-primary: #7892f5;
   --rfb-primary-dark: #91a6f8;
-  --rfb-primary-soft: #293455;
+  --rfb-primary-soft: #2d3c68;
   --rfb-danger: #ff7c87;
   --rfb-border: #394151;
   --rfb-border-strong: #4a5466;
