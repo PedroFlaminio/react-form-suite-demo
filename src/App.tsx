@@ -9,6 +9,7 @@ import {
   type FormError,
   type FormField,
 } from "react-form-builder"
+import { Wiki } from "./Wiki"
 
 const initialFields: FormField[] = [
   {
@@ -97,6 +98,7 @@ const initialFields: FormField[] = [
 
 type Tab = "builder" | "preview" | "answers" | "json"
 type Theme = "light" | "dark"
+type Page = "demo" | "wiki"
 
 function DemoIcon({ children }: { children: ReactNode }) {
   return (
@@ -155,7 +157,13 @@ function getInitialTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 }
 
+function getInitialPage(): Page {
+  if (typeof window === "undefined") return "demo"
+  return window.location.pathname.replace(/\/+$/, "").endsWith("/wiki") ? "wiki" : "demo"
+}
+
 export function App() {
+  const [page, setPage] = useState<Page>(getInitialPage)
   const [tab, setTab] = useState<Tab>("builder")
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
   const [fields, setFields] = useState<FormField[]>(initialFields)
@@ -173,6 +181,59 @@ export function App() {
     window.localStorage.setItem("rfb-demo-theme", theme)
   }, [theme])
 
+  useEffect(() => {
+    const updatePage = () => setPage(getInitialPage())
+    window.addEventListener("popstate", updatePage)
+    return () => window.removeEventListener("popstate", updatePage)
+  }, [])
+
+  const navigateTo = (nextPage: Page) => {
+    const nextPath = nextPage === "wiki" ? "/wiki" : "/"
+    window.history.pushState({}, "", nextPath)
+    setPage(nextPage)
+    window.scrollTo({ top: 0 })
+  }
+
+  if (page === "wiki") {
+    return (
+      <div className="demo-shell demo-shell--wiki">
+        <header className="wiki-page-header">
+          <button className="wiki-brand" type="button" onClick={() => navigateTo("demo")}>
+            <span className="wiki-brand__mark">RFB</span>
+            <span>
+              <strong>react-form-builder</strong>
+              <small>Documentação</small>
+            </span>
+          </button>
+          <div className="demo-header-actions">
+            <button className="wiki-back" type="button" onClick={() => navigateTo("demo")}>
+              ← Voltar para a demo
+            </button>
+            <button
+              className="demo-theme-toggle"
+              type="button"
+              onClick={() => setTheme((current) => (current === "light" ? "dark" : "light"))}
+              aria-label={`Ativar tema ${theme === "light" ? "escuro" : "claro"}`}
+              title={`Ativar tema ${theme === "light" ? "escuro" : "claro"}`}
+            >
+              {theme === "light" ? <MoonIcon /> : <SunIcon />}
+              {theme === "light" ? "Escuro" : "Claro"}
+            </button>
+          </div>
+        </header>
+
+        <main className="wiki-page-content">
+          <Wiki />
+        </main>
+
+        <footer className="demo-footer">
+          <span>react-form-builder</span>
+          <span>TypeScript · ESM · CSS isolado</span>
+        </footer>
+      </div>
+    )
+  }
+
   return (
     <div className="demo-shell">
       <header>
@@ -187,6 +248,9 @@ export function App() {
             </p>{" "}
           </div>
           <div className="demo-header-actions">
+            <button className="demo-docs-link" type="button" onClick={() => navigateTo("wiki")}>
+              Documentação
+            </button>
             <button
               className="demo-theme-toggle"
               type="button"

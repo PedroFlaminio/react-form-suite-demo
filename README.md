@@ -9,6 +9,7 @@ A interface permite:
 - validar campos obrigatórios com a API pública da biblioteca;
 - exibir as respostas efetivamente enviadas;
 - visualizar e copiar a definição atual em JSON;
+- consultar em `/wiki` uma documentação completa com guia de uso, referência da API e exemplos copiáveis;
 - alternar entre os temas claro e escuro.
 
 ## Pré-requisitos
@@ -50,6 +51,7 @@ npm run dev
 demo/
 ├── src/
 │   ├── App.tsx       # Interface e estado da demonstração
+│   ├── Wiki.tsx      # Documentação integrada da biblioteca
 │   ├── demo.css      # Estilos e temas da página
 │   └── main.tsx      # Ponto de entrada React
 ├── index.html
