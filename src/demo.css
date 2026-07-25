@@ -476,6 +476,46 @@ button {
   line-height: 1.75;
 }
 
+.wiki-component-hero {
+  padding: 28px 6px 42px;
+  border-bottom: 1px solid var(--demo-border);
+}
+
+.wiki-component-hero h2 {
+  margin: 8px 0 13px;
+  color: var(--demo-heading);
+  font-size: clamp(40px, 6vw, 62px);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.wiki-component-hero > p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--demo-muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.wiki-breadcrumb {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 24px;
+  color: var(--demo-muted);
+  font-size: 11px;
+}
+
+.wiki-breadcrumb a {
+  color: var(--wiki-accent);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.wiki-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
 .wiki-tags {
   display: flex;
   flex-wrap: wrap;
@@ -553,6 +593,12 @@ button {
 .wiki-sidebar a:hover {
   border-left-color: var(--wiki-accent);
   color: var(--wiki-accent);
+}
+
+.wiki-sidebar a.active {
+  border-left-color: var(--wiki-accent);
+  color: var(--wiki-accent);
+  font-weight: 750;
 }
 
 .wiki-content {
@@ -889,6 +935,61 @@ button {
   font-style: normal;
 }
 
+.wiki-component-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+  margin-top: 24px;
+}
+
+.wiki-component-links--overview {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wiki-component-links a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 14px;
+  align-items: center;
+  padding: 19px;
+  border: 1px solid var(--demo-border);
+  border-radius: 11px;
+  color: var(--demo-text);
+  text-decoration: none;
+  transition:
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.wiki-component-links a:hover {
+  border-color: var(--wiki-accent);
+  transform: translateY(-2px);
+}
+
+.wiki-component-links span {
+  color: var(--demo-heading);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.wiki-component-links small {
+  grid-column: 1;
+  color: var(--demo-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.wiki-component-links i {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  color: var(--wiki-accent);
+  font-style: normal;
+}
+
+.wiki-next-section {
+  padding-bottom: 10px;
+}
+
 .wiki-end {
   margin-top: 38px;
   padding: 26px;
@@ -1048,7 +1149,9 @@ button {
   .wiki-flow,
   .wiki-grid,
   .wiki-helper-groups,
-  .wiki-aliases {
+  .wiki-aliases,
+  .wiki-component-links,
+  .wiki-component-links--overview {
     grid-template-columns: 1fr;
   }
 

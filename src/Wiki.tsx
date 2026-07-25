@@ -682,24 +682,24 @@ export function Wiki() {
           <section id="componentes" className="wiki-section">
             <span className="wiki-section__number">04</span>
             <h3>Referência dos componentes</h3>
-
-            <div className="wiki-api-heading">
-              <code>FormBuilder</code>
-              <span>Editor visual da estrutura</span>
+            <p>Cada componente possui uma página própria com exemplos, comportamentos e referência completa de props.</p>
+            <div className="wiki-component-links wiki-component-links--overview">
+              <WikiLink to="form-builder" onNavigate={navigate}>
+                <span>FormBuilder</span>
+                <small>Construa e edite a definição do formulário.</small>
+                <i aria-hidden="true">→</i>
+              </WikiLink>
+              <WikiLink to="form-renderer" onNavigate={navigate}>
+                <span>FormRenderer</span>
+                <small>Renderize campos, colete valores e mostre erros.</small>
+                <i aria-hidden="true">→</i>
+              </WikiLink>
+              <WikiLink to="form-answers" onNavigate={navigate}>
+                <span>FormAnswers</span>
+                <small>Agrupe, proteja e apresente as respostas.</small>
+                <i aria-hidden="true">→</i>
+              </WikiLink>
             </div>
-            <PropsTable rows={builderProps} />
-
-            <div className="wiki-api-heading">
-              <code>FormRenderer</code>
-              <span>Formulário de preenchimento</span>
-            </div>
-            <PropsTable rows={rendererProps} />
-
-            <div className="wiki-api-heading">
-              <code>FormAnswers</code>
-              <span>Apresentação das respostas</span>
-            </div>
-            <PropsTable rows={answerProps} />
           </section>
 
           <section id="respostas" className="wiki-section">

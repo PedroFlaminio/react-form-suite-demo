@@ -159,7 +159,7 @@ function getInitialTheme(): Theme {
 
 function getInitialPage(): Page {
   if (typeof window === "undefined") return "demo"
-  return window.location.pathname.replace(/\/+$/, "").endsWith("/wiki") ? "wiki" : "demo"
+  return /(^|\/)wiki(?:\/|$)/.test(window.location.pathname) ? "wiki" : "demo"
 }
 
 export function App() {

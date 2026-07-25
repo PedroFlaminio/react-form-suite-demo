@@ -9,7 +9,8 @@ A interface permite:
 - validar campos obrigatórios com a API pública da biblioteca;
 - exibir as respostas efetivamente enviadas;
 - visualizar e copiar a definição atual em JSON;
-- consultar em `/wiki` uma documentação completa com guia de uso, referência da API e exemplos copiáveis;
+- consultar em `/wiki` uma documentação completa com guia de uso e páginas individuais para `FormBuilder`,
+  `FormRenderer` e `FormAnswers`;
 - alternar entre os temas claro e escuro.
 
 ## Pré-requisitos
