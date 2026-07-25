@@ -1,5 +1,258 @@
 import { useEffect, useState } from "react"
 import type { MouseEvent, ReactNode } from "react"
+import { useDemoLocale } from "./i18n"
+
+const wikiSpanish: Record<string, string> = {
+  "Copied!": "¡Copiado!",
+  Copy: "Copiar",
+  Property: "Propiedad",
+  Type: "Tipo",
+  Description: "Descripción",
+  Documentation: "Documentación",
+  Components: "Componentes",
+  "Component documentation": "Documentación de los componentes",
+  Overview: "Vista general",
+  Usage: "Uso",
+  "Import the component and types directly from ": "Importa el componente y los tipos directamente desde ",
+  "CSS is already included by the main entry point.": "El CSS ya está incluido en el punto de entrada principal.",
+  "Builder configuration": "Configuración del constructor",
+  "In controlled mode, ": "En modo controlado, ",
+  " is the source of truth. Use ": " es la fuente de verdad. Usa ",
+  " to show only the field types supported by your product.": " para mostrar solo los tipos de campo admitidos por tu producto.",
+  Add: "Añadir",
+  "Drag a type from the palette or double-click it to append it.": "Arrastra un tipo desde la paleta o haz doble clic para añadirlo al final.",
+  Edit: "Editar",
+  "Labels, descriptions, required and sensitive flags, and limits are configured in the field editor.": "Las etiquetas, descripciones, obligatoriedad, sensibilidad y límites se configuran en el editor del campo.",
+  Reorder: "Ordenar",
+  "Drag the cards or use the move controls. Order is normalized automatically.": "Arrastra las tarjetas o usa los controles de movimiento. El orden se normaliza automáticamente.",
+  "Display modes": "Modos de visualización",
+  "The same component supports data entry, read-only, and anonymous flows. The aliases ": "El mismo componente admite introducción de datos, solo lectura y flujos anónimos. Los alias ",
+  and: "y",
+  "exist for compatibility only.": "solo existen por compatibilidad.",
+  "Explicit validation": "Validación explícita",
+  "The renderer does not decide when a value is valid. Run ": "El renderer no decide cuándo un valor es válido. Ejecuta ",
+  " on submit and pass the resulting array to ": " al enviar y pasa el array resultante a ",
+  "Formatting and grouping": "Formato y agrupación",
+  "Answers with the same ": "Las respuestas con el mismo ",
+  " are grouped. Without an ID, the label becomes the key. The ": " se agrupan. Sin identificador, la etiqueta se usa como clave. La propiedad ",
+  " property preserves form order.": " conserva el orden del formulario.",
+  Dates: "Fechas",
+  "ISO values such as 2026-07-25 are displayed as 07/25/2026 in en-US.": "Los valores ISO como 2026-07-25 se muestran como 25/07/2026 en es-ES.",
+  "Multiple choice": "Selección múltiple",
+  "Checkbox values are grouped into a list under the same label.": "Los valores de las casillas se agrupan en una lista bajo la misma etiqueta.",
+  Sensitive: "Sensibles",
+  "When sensitive is true, the content is replaced with “Answer hidden”.": "Cuando sensitive es verdadero, el contenido se sustituye por «Respuesta oculta».",
+  Properties: "Propiedades",
+  "Keep exploring": "Sigue explorando",
+  "Edit the form structure.": "Edita la estructura del formulario.",
+  "Collect and validate answers.": "Recopila y valida las respuestas.",
+  "Display submitted results.": "Muestra el resultado enviado.",
+  "Build dynamic forms in React": "Crea formularios dinámicos en React",
+  "A practical guide from installation to submission: build fields visually, render the form, and display answers with a typed API and no UI dependencies.": "Una guía práctica desde la instalación hasta el envío: crea campos visualmente, renderiza el formulario y muestra las respuestas con una API tipada y sin dependencias de interfaz.",
+  "Scoped CSS": "CSS aislado",
+  "Install the package": "Instala el paquete",
+  "On this page": "En esta página",
+  "Documentation contents": "Contenido de la documentación",
+  "Getting started": "Primeros pasos",
+  "How it works": "Cómo funciona",
+  "Field types": "Tipos de campo",
+  "Answers and validation": "Respuestas y validación",
+  Customization: "Personalización",
+  Compatibility: "Compatibilidad",
+  "The main entry point includes the library CSS. If your bundler requires an explicit import, use ": "El punto de entrada principal ya incluye el CSS de la biblioteca. Si tu bundler exige una importación explícita, usa ",
+  "1. Build the definition": "1. Construye la definición",
+  "The ": "El ",
+  " receives an array of fields and returns a new definition after each edit.": " recibe un array de campos y devuelve una nueva definición después de cada edición.",
+  "2. Render and validate": "2. Renderiza y valida",
+  "Pass the same definition to ": "Pasa la misma definición a ",
+  " Answers can live in your state and be sent to any API.": " Las respuestas pueden permanecer en tu estado y enviarse a cualquier API.",
+  "3. Display the result": "3. Muestra el resultado",
+  " formats dates, currency, and phone values, groups multiple choices, and hides sensitive answers.": " formatea fechas, importes monetarios y teléfonos, agrupa selecciones múltiples y oculta las respuestas sensibles.",
+  "Controlled or uncontrolled?": "¿Controlado o no controlado?",
+  "Use ": "Usa ",
+  " when state belongs to the application. For a simpler integration, use ": " cuando el estado pertenece a la aplicación. Para una integración más sencilla, usa ",
+  "Languages and regional formats": "Idiomas y formatos regionales",
+  "Use the provider to apply a locale to the entire tree, or the locale prop on one component. Exported locale objects are also typed foundations for additional languages.": "Usa el provider para aplicar un locale a todo el árbol, o la prop locale en un componente. Los objetos exportados también sirven como bases tipadas para añadir otros idiomas.",
+  "How the library works": "Cómo funciona la biblioteca",
+  Definition: "Definición",
+  "The builder creates a portable ": "El builder crea un array portable de ",
+  " array.": ".",
+  "Data entry": "Introducción de datos",
+  "The renderer turns fields into controls and produces ": "El renderer transforma los campos en controles y produce ",
+  Output: "Salida",
+  "Validate, persist to your API, or display with ": "Valida, guarda en tu API o muestra con ",
+  "Field contract": "Contrato de un campo",
+  " is optional but recommended for matching answers without relying on labels. ": " es opcional, pero se recomienda para relacionar respuestas sin depender de las etiquetas. ",
+  " defines the visual order.": " define el orden visual.",
+  "Limit the builder palette with ": "Limita la paleta del constructor con ",
+  " when your product supports only part of the catalog. In en-US, CPF and CNPJ are hidden and CEP is presented as ZIP code.": " cuando tu producto solo admita parte del catálogo. En es-ES, CPF y CNPJ se ocultan y CEP se presenta como Código postal.",
+  "Relevant settings": "Configuraciones relevantes",
+  "Options and default values": "Opciones y valores predeterminados",
+  "In choice fields, each item uses ": "En los campos de selección, cada elemento usa ",
+  " An option marked as ": " Una opción marcada como ",
+  " is included in the initial answers. ": " se incluye en las respuestas iniciales. ",
+  " supports multiple values.": " admite varios valores.",
+  "Component reference": "Referencia de componentes",
+  "Each component has its own page with examples, behavior, and a complete prop reference.": "Cada componente tiene su propia página con ejemplos, comportamiento y una referencia completa de props.",
+  "Build and edit the form definition.": "Construye y edita la definición del formulario.",
+  "Render fields, collect values, and display errors.": "Renderiza campos, recopila valores y muestra errores.",
+  "Group, protect, and display answers.": "Agrupa, protege y muestra las respuestas.",
+  "Answers, validation, and privacy": "Respuestas, validación y privacidad",
+  "Each answer contains the data needed to persist and display it without looking up the original field. Multiple choices produce one answer per option.": "Cada respuesta contiene los datos necesarios para guardarla y mostrarla sin volver a consultar el campo original. Las selecciones múltiples generan una respuesta por opción.",
+  Validation: "Validación",
+  " checks required fields and text ": " comprueba los campos obligatorios y ",
+  ". It always returns ": " en textos. Siempre devuelve ",
+  "Sensitive fields": "Campos sensibles",
+  "Mark the field with ": "Marca el campo con ",
+  " The summary hides its value while preserving the protected-content indicator.": " El resumen oculta su valor, pero conserva el indicador de contenido protegido.",
+  "Anonymous mode": "Modo anónimo",
+  "With ": "Con ",
+  ", sensitive fields are neither rendered nor included in validation.": ", los campos sensibles no se renderizan ni se incluyen en la validación.",
+  "Helpers and constants": "Helpers y constantes",
+  "Fields and options": "Campos y opciones",
+  Answers: "Respuestas",
+  "Validation and masks": "Validación y máscaras",
+  Catalog: "Catálogo",
+  "Visual customization": "Personalización visual",
+  "Internal classes use the ": "Las clases internas usan el prefijo ",
+  " prefix. For themes, override the CSS variables in one of your application classes.": ". Para los temas, sobrescribe las variables CSS en una clase de tu aplicación.",
+  "Compatibility and aliases": "Compatibilidad y alias",
+  "The library keeps equivalent names to simplify migrations. In new code, prefer the names in the first column.": "La biblioteca mantiene nombres equivalentes para facilitar las migraciones. En código nuevo, usa preferentemente los nombres de la primera columna.",
+  "Ready to try it?": "¿Listo para probarlo?",
+  "Return to the demo tabs to build a form and inspect the generated contract in real time.": "Vuelve a las pestañas de la demo para construir un formulario y consultar el contrato generado en tiempo real.",
+  "Back to top ↑": "Volver arriba ↑",
+}
+
+const wikiFrench: Record<string, string> = {
+  "Copied!": "Copié !",
+  Copy: "Copier",
+  Property: "Propriété",
+  Type: "Type",
+  Description: "Description",
+  Documentation: "Documentation",
+  Components: "Composants",
+  "Component documentation": "Documentation des composants",
+  Overview: "Vue d’ensemble",
+  Usage: "Utilisation",
+  "Import the component and types directly from ": "Importez le composant et les types directement depuis ",
+  "CSS is already included by the main entry point.": "Le CSS est déjà inclus dans le point d’entrée principal.",
+  "Builder configuration": "Configuration du constructeur",
+  "In controlled mode, ": "En mode contrôlé, ",
+  " is the source of truth. Use ": " est la source de vérité. Utilisez ",
+  " to show only the field types supported by your product.": " pour afficher uniquement les types de champ pris en charge par votre produit.",
+  Add: "Ajouter",
+  "Drag a type from the palette or double-click it to append it.": "Faites glisser un type depuis la palette ou double-cliquez pour l’ajouter à la fin.",
+  Edit: "Modifier",
+  "Labels, descriptions, required and sensitive flags, and limits are configured in the field editor.": "Les libellés, descriptions, indicateurs obligatoires et sensibles ainsi que les limites sont configurés dans l’éditeur de champ.",
+  Reorder: "Réorganiser",
+  "Drag the cards or use the move controls. Order is normalized automatically.": "Faites glisser les cartes ou utilisez les commandes de déplacement. L’ordre est normalisé automatiquement.",
+  "Display modes": "Modes d’affichage",
+  "The same component supports data entry, read-only, and anonymous flows. The aliases ": "Le même composant gère la saisie, la lecture seule et les parcours anonymes. Les alias ",
+  and: "et",
+  "exist for compatibility only.": "existent uniquement pour assurer la compatibilité.",
+  "Explicit validation": "Validation explicite",
+  "The renderer does not decide when a value is valid. Run ": "Le renderer ne décide pas si une valeur est valide. Exécutez ",
+  " on submit and pass the resulting array to ": " lors de l’envoi et transmettez le tableau obtenu à ",
+  "Formatting and grouping": "Formatage et regroupement",
+  "Answers with the same ": "Les réponses ayant le même ",
+  " are grouped. Without an ID, the label becomes the key. The ": " sont regroupées. Sans identifiant, le libellé devient la clé. La propriété ",
+  " property preserves form order.": " conserve l’ordre du formulaire.",
+  Dates: "Dates",
+  "ISO values such as 2026-07-25 are displayed as 07/25/2026 in en-US.": "Les valeurs ISO comme 2026-07-25 sont affichées au format 25/07/2026 en fr-FR.",
+  "Multiple choice": "Choix multiple",
+  "Checkbox values are grouped into a list under the same label.": "Les valeurs des cases à cocher sont regroupées dans une liste sous le même libellé.",
+  Sensitive: "Données sensibles",
+  "When sensitive is true, the content is replaced with “Answer hidden”.": "Lorsque sensitive vaut true, le contenu est remplacé par « Réponse masquée ».",
+  Properties: "Propriétés",
+  "Keep exploring": "Poursuivre l’exploration",
+  "Edit the form structure.": "Modifiez la structure du formulaire.",
+  "Collect and validate answers.": "Collectez et validez les réponses.",
+  "Display submitted results.": "Affichez les résultats envoyés.",
+  "Build dynamic forms in React": "Créez des formulaires dynamiques avec React",
+  "A practical guide from installation to submission: build fields visually, render the form, and display answers with a typed API and no UI dependencies.": "Un guide pratique de l’installation à l’envoi : construisez visuellement les champs, affichez le formulaire et présentez les réponses avec une API typée sans dépendance d’interface.",
+  "Scoped CSS": "CSS isolé",
+  "Install the package": "Installez le package",
+  "On this page": "Sur cette page",
+  "Documentation contents": "Sommaire de la documentation",
+  "Getting started": "Premiers pas",
+  "How it works": "Fonctionnement",
+  "Field types": "Types de champ",
+  "Answers and validation": "Réponses et validation",
+  Customization: "Personnalisation",
+  Compatibility: "Compatibilité",
+  "The main entry point includes the library CSS. If your bundler requires an explicit import, use ": "Le point d’entrée principal inclut le CSS de la bibliothèque. Si votre bundler exige un import explicite, utilisez ",
+  "1. Build the definition": "1. Construisez la définition",
+  "The ": "Le ",
+  " receives an array of fields and returns a new definition after each edit.": " reçoit un tableau de champs et renvoie une nouvelle définition après chaque modification.",
+  "2. Render and validate": "2. Affichez et validez",
+  "Pass the same definition to ": "Transmettez la même définition à ",
+  " Answers can live in your state and be sent to any API.": " Les réponses peuvent rester dans votre état et être envoyées à n’importe quelle API.",
+  "3. Display the result": "3. Affichez le résultat",
+  " formats dates, currency, and phone values, groups multiple choices, and hides sensitive answers.": " formate les dates, les montants et les téléphones, regroupe les choix multiples et masque les réponses sensibles.",
+  "Controlled or uncontrolled?": "Contrôlé ou non contrôlé ?",
+  "Use ": "Utilisez ",
+  " when state belongs to the application. For a simpler integration, use ": " lorsque l’état appartient à l’application. Pour une intégration plus simple, utilisez ",
+  "Languages and regional formats": "Langues et formats régionaux",
+  "Use the provider to apply a locale to the entire tree, or the locale prop on one component. Exported locale objects are also typed foundations for additional languages.": "Utilisez le provider pour appliquer une locale à toute l’arborescence, ou la prop locale sur un seul composant. Les objets exportés servent aussi de bases typées pour ajouter d’autres langues.",
+  "How the library works": "Fonctionnement de la bibliothèque",
+  Definition: "Définition",
+  "The builder creates a portable ": "Le builder crée un tableau portable de ",
+  " array.": ".",
+  "Data entry": "Saisie",
+  "The renderer turns fields into controls and produces ": "Le renderer transforme les champs en contrôles et produit ",
+  Output: "Sortie",
+  "Validate, persist to your API, or display with ": "Validez, enregistrez dans votre API ou affichez avec ",
+  "Field contract": "Contrat d’un champ",
+  " is optional but recommended for matching answers without relying on labels. ": " est facultatif, mais recommandé pour associer les réponses sans dépendre des libellés. ",
+  " defines the visual order.": " définit l’ordre visuel.",
+  "Limit the builder palette with ": "Limitez la palette du constructeur avec ",
+  " when your product supports only part of the catalog. In en-US, CPF and CNPJ are hidden and CEP is presented as ZIP code.": " lorsque votre produit ne prend en charge qu’une partie du catalogue. En fr-FR, CPF et CNPJ sont masqués et CEP devient Code postal.",
+  "Relevant settings": "Paramètres utiles",
+  "Options and default values": "Options et valeurs par défaut",
+  "In choice fields, each item uses ": "Dans les champs de choix, chaque élément utilise ",
+  " An option marked as ": " Une option marquée ",
+  " is included in the initial answers. ": " est incluse dans les réponses initiales. ",
+  " supports multiple values.": " accepte plusieurs valeurs.",
+  "Component reference": "Référence des composants",
+  "Each component has its own page with examples, behavior, and a complete prop reference.": "Chaque composant possède sa propre page avec des exemples, son comportement et la référence complète de ses props.",
+  "Build and edit the form definition.": "Construisez et modifiez la définition du formulaire.",
+  "Render fields, collect values, and display errors.": "Affichez les champs, collectez les valeurs et présentez les erreurs.",
+  "Group, protect, and display answers.": "Regroupez, protégez et affichez les réponses.",
+  "Answers, validation, and privacy": "Réponses, validation et confidentialité",
+  "Each answer contains the data needed to persist and display it without looking up the original field. Multiple choices produce one answer per option.": "Chaque réponse contient les données nécessaires à son enregistrement et à son affichage sans consulter le champ d’origine. Les choix multiples produisent une réponse par option.",
+  Validation: "Validation",
+  " checks required fields and text ": " vérifie les champs obligatoires et la propriété ",
+  ". It always returns ": " des textes. Il renvoie toujours ",
+  "Sensitive fields": "Champs sensibles",
+  "Mark the field with ": "Marquez le champ avec ",
+  " The summary hides its value while preserving the protected-content indicator.": " Le résumé masque sa valeur tout en conservant l’indicateur de contenu protégé.",
+  "Anonymous mode": "Mode anonyme",
+  "With ": "Avec ",
+  ", sensitive fields are neither rendered nor included in validation.": ", les champs sensibles ne sont ni affichés ni inclus dans la validation.",
+  "Helpers and constants": "Helpers et constantes",
+  "Fields and options": "Champs et options",
+  Answers: "Réponses",
+  "Validation and masks": "Validation et masques",
+  Catalog: "Catalogue",
+  "Visual customization": "Personnalisation visuelle",
+  "Internal classes use the ": "Les classes internes utilisent le préfixe ",
+  " prefix. For themes, override the CSS variables in one of your application classes.": ". Pour les thèmes, remplacez les variables CSS dans une classe de votre application.",
+  "Compatibility and aliases": "Compatibilité et alias",
+  "The library keeps equivalent names to simplify migrations. In new code, prefer the names in the first column.": "La bibliothèque conserve des noms équivalents pour simplifier les migrations. Dans le nouveau code, privilégiez les noms de la première colonne.",
+  "Ready to try it?": "Prêt à essayer ?",
+  "Return to the demo tabs to build a form and inspect the generated contract in real time.": "Revenez aux onglets de la démo pour construire un formulaire et consulter le contrat généré en temps réel.",
+  "Back to top ↑": "Retour en haut ↑",
+}
+
+function useWikiText() {
+  const { locale } = useDemoLocale()
+  return (portuguese: string, english: string, spanish?: string) => {
+    if (locale === "en-US") return english
+    if (locale === "es-ES") return spanish ?? wikiSpanish[english] ?? portuguese
+    if (locale === "fr-FR") return wikiFrench[english] ?? english
+    return portuguese
+  }
+}
 
 const installCode = `npm install react-form-builder`
 
@@ -175,6 +428,28 @@ const answersFormattingCode = `const answers: FormAnswer[] = [
   },
 ]`
 
+const localeCode = `import {
+  FormBuilderLocaleProvider,
+  EN_US_LOCALE,
+  ES_ES_LOCALE,
+  FR_FR_LOCALE,
+  type FormBuilderLocale,
+} from "react-form-builder"
+
+// Applies one locale to every library component below the provider.
+<FormBuilderLocaleProvider locale="es-ES">
+  <FormBuilder fields={fields} onChange={setFields} />
+  <FormRenderer fields={fields} />
+  <FormAnswers answers={answers} />
+</FormBuilderLocaleProvider>
+
+// A new language can provide a complete, typed locale definition.
+const customLocale: FormBuilderLocale = {
+  ...EN_US_LOCALE,
+  code: "en-CA",
+  // Override catalog, messages, defaults, masks, and formatDate as needed.
+}`
+
 const fieldTypes = [
   ["text", "Texto em uma linha", "minlength, maxlength, defaultValue"],
   ["number", "Número", "min, max"],
@@ -190,11 +465,51 @@ const fieldTypes = [
   ["checkbox-group", "Grupo de múltipla escolha", "formularioCampoOpcao"],
 ]
 
+const fieldTypesEn = [
+  ["text", "Single-line text", "minlength, maxlength, defaultValue"],
+  ["number", "Number", "min, max"],
+  ["currency", "Currency with localized mask", "prefix (default: $)"],
+  ["phone", "US phone number", "prefix (default: +1)"],
+  ["date", "Date displayed as MM/DD/YYYY", "—"],
+  ["cep", "ZIP or ZIP+4 code", "—"],
+  ["textarea", "Multi-line text", "minlength, maxlength"],
+  ["select", "Single-selection list", "formularioCampoOpcao"],
+  ["radio-group", "Single-choice group", "formularioCampoOpcao"],
+  ["checkbox-group", "Multiple-choice group", "formularioCampoOpcao"],
+]
+
+const fieldTypesEs = [
+  ["text", "Texto en una línea", "minlength, maxlength, defaultValue"],
+  ["number", "Número", "min, max"],
+  ["currency", "Importe monetario con máscara localizada", "prefix (predeterminado: €)"],
+  ["phone", "Teléfono español", "prefix (predeterminado: +34)"],
+  ["date", "Fecha con formato DD/MM/YYYY", "—"],
+  ["cep", "Código postal de cinco dígitos", "—"],
+  ["textarea", "Texto en varias líneas", "minlength, maxlength"],
+  ["select", "Lista de selección única", "formularioCampoOpcao"],
+  ["radio-group", "Grupo de elección única", "formularioCampoOpcao"],
+  ["checkbox-group", "Grupo de elección múltiple", "formularioCampoOpcao"],
+]
+
+const fieldTypesFr = [
+  ["text", "Texte sur une ligne", "minlength, maxlength, defaultValue"],
+  ["number", "Nombre", "min, max"],
+  ["currency", "Montant avec masque localisé", "prefix (par défaut : €)"],
+  ["phone", "Téléphone français", "prefix (par défaut : +33)"],
+  ["date", "Date au format DD/MM/YYYY", "—"],
+  ["cep", "Code postal à cinq chiffres", "—"],
+  ["textarea", "Texte sur plusieurs lignes", "minlength, maxlength"],
+  ["select", "Liste à sélection unique", "formularioCampoOpcao"],
+  ["radio-group", "Groupe à choix unique", "formularioCampoOpcao"],
+  ["checkbox-group", "Groupe à choix multiples", "formularioCampoOpcao"],
+]
+
 const builderProps = [
   ["fields", "FormField[]", "Campos no modo controlado."],
   ["defaultFields", "FormField[]", "Campos iniciais no modo não controlado."],
   ["onChange", "(fields) => void", "Executado após cada alteração."],
   ["allowedTypes", "readonly FieldType[]", "Restringe os tipos disponíveis na paleta."],
+  ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Idioma, textos e formatos regionais."],
   ["currencyPrefix", "string", "Prefixo inicial de campos monetários. Padrão: R$."],
   ["phonePrefix", "string", "Prefixo inicial de telefones. Padrão: +55."],
   ["disabled", "boolean", "Bloqueia as alterações no construtor."],
@@ -205,6 +520,7 @@ const builderProps = [
 
 const rendererProps = [
   ["fields", "FormField[]", "Definição dos campos do formulário."],
+  ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Idioma, textos e formatos regionais."],
   ["value", "FormAnswer[]", "Respostas no modo controlado."],
   ["defaultValue", "FormAnswer[]", "Respostas iniciais no modo não controlado."],
   ["onChange", "(answers) => void", "Executado sempre que uma resposta muda."],
@@ -221,12 +537,14 @@ const rendererProps = [
 
 const answerProps = [
   ["answers", "readonly FormAnswer[]", "Respostas produzidas pelo renderizador."],
+  ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Idioma, textos e formatos regionais."],
   ["emptyMessage", "ReactNode", "Conteúdo exibido quando não há respostas."],
   ["className / style", "string / CSSProperties", "Personaliza o elemento raiz."],
   ["aria-label", "string", "Nome acessível da seção."],
 ]
 
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
+  const text = useWikiText()
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -240,7 +558,7 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
       <div className="wiki-code__bar">
         <span>{language}</span>
         <button type="button" onClick={() => void copy()}>
-          {copied ? "Copiado!" : "Copiar"}
+          {copied ? text("Copiado!", "Copied!") : text("Copiar", "Copy")}
         </button>
       </div>
       <pre>
@@ -251,14 +569,15 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
 }
 
 function PropsTable({ rows }: { rows: string[][] }) {
+  const text = useWikiText()
   return (
     <div className="wiki-table-wrap">
       <table className="wiki-table">
         <thead>
           <tr>
-            <th>Propriedade</th>
-            <th>Tipo</th>
-            <th>Descrição</th>
+            <th>{text("Propriedade", "Property")}</th>
+            <th>{text("Tipo", "Type")}</th>
+            <th>{text("Descrição", "Description")}</th>
           </tr>
         </thead>
         <tbody>
@@ -343,6 +662,186 @@ const componentPages = {
   },
 } as const
 
+const componentPagesEn = {
+  "form-builder": {
+    name: "FormBuilder",
+    eyebrow: "Visual editor",
+    description:
+      "Creates and edits a form definition. Users can add fields from the palette, reorder, duplicate, and configure each item.",
+    code: builderCode,
+    props: [
+      ["fields", "FormField[]", "Fields in controlled mode."],
+      ["defaultFields", "FormField[]", "Initial fields in uncontrolled mode."],
+      ["onChange", "(fields) => void", "Runs after each change."],
+      ["allowedTypes", "readonly FieldType[]", "Limits the field types in the palette."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "UI language and regional formats."],
+      ["currencyPrefix", "string", "Initial currency prefix."],
+      ["phonePrefix", "string", "Initial phone prefix."],
+      ["disabled", "boolean", "Prevents changes in the builder."],
+      ["emptyMessage", "ReactNode", "Content displayed when there are no fields."],
+      ["className / style", "string / CSSProperties", "Customizes the root element."],
+      ["aria-label", "string", "Accessible name for the builder."],
+    ],
+  },
+  "form-renderer": {
+    name: "FormRenderer",
+    eyebrow: "Data entry",
+    description:
+      "Turns a FormField[] definition into an accessible form and produces its answers as FormAnswer[].",
+    code: rendererCode,
+    props: [
+      ["fields", "FormField[]", "Form field definition."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "UI language and regional formats."],
+      ["value", "FormAnswer[]", "Answers in controlled mode."],
+      ["defaultValue", "FormAnswer[]", "Initial answers in uncontrolled mode."],
+      ["onChange", "(answers) => void", "Runs whenever an answer changes."],
+      ["onSubmit", "(answers, event) => void", "Runs when the form is submitted."],
+      ["errors", "FormError[]", "Errors shown in the summary and fields."],
+      ["anonymous", "boolean", "Hides fields marked as sensitive."],
+      ["disabled / readOnly", "boolean", "Disables the form or makes it read-only."],
+      ["submitLabel", "ReactNode", "Submit button content."],
+      ["hideSubmit", "boolean", "Hides the submit button."],
+      ["noValidate", "boolean", "Sets the HTML noValidate attribute."],
+      ["className / style", "string / CSSProperties", "Customizes the form."],
+      ["aria-label", "string", "Accessible name for the form."],
+    ],
+  },
+  "form-answers": {
+    name: "FormAnswers",
+    eyebrow: "Presentation",
+    description:
+      "Displays submitted answers with type-aware formatting, grouping for multiple choices, and protection for sensitive values.",
+    code: answersCode,
+    props: [
+      ["answers", "readonly FormAnswer[]", "Answers produced by the renderer."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "UI language and regional formats."],
+      ["emptyMessage", "ReactNode", "Content displayed when there are no answers."],
+      ["className / style", "string / CSSProperties", "Customizes the root element."],
+      ["aria-label", "string", "Accessible name for the section."],
+    ],
+  },
+} as const
+
+const componentPagesEs = {
+  "form-builder": {
+    name: "FormBuilder",
+    eyebrow: "Editor visual",
+    description:
+      "Crea y edita la definición de un formulario. Permite añadir campos desde la paleta, reordenarlos, duplicarlos y configurar cada elemento.",
+    code: builderCode,
+    props: [
+      ["fields", "FormField[]", "Campos en modo controlado."],
+      ["defaultFields", "FormField[]", "Campos iniciales en modo no controlado."],
+      ["onChange", "(fields) => void", "Se ejecuta después de cada cambio."],
+      ["allowedTypes", "readonly FieldType[]", "Limita los tipos de campo de la paleta."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Idioma y formatos regionales."],
+      ["currencyPrefix", "string", "Prefijo monetario inicial."],
+      ["phonePrefix", "string", "Prefijo telefónico inicial."],
+      ["disabled", "boolean", "Impide cambios en el constructor."],
+      ["emptyMessage", "ReactNode", "Contenido mostrado cuando no hay campos."],
+      ["className / style", "string / CSSProperties", "Personaliza el elemento raíz."],
+      ["aria-label", "string", "Nombre accesible del constructor."],
+    ],
+  },
+  "form-renderer": {
+    name: "FormRenderer",
+    eyebrow: "Introducción de datos",
+    description:
+      "Transforma una definición FormField[] en un formulario accesible y produce sus respuestas como FormAnswer[].",
+    code: rendererCode,
+    props: [
+      ["fields", "FormField[]", "Definición de los campos."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Idioma y formatos regionales."],
+      ["value", "FormAnswer[]", "Respuestas en modo controlado."],
+      ["defaultValue", "FormAnswer[]", "Respuestas iniciales en modo no controlado."],
+      ["onChange", "(answers) => void", "Se ejecuta cuando cambia una respuesta."],
+      ["onSubmit", "(answers, event) => void", "Se ejecuta al enviar el formulario."],
+      ["errors", "FormError[]", "Errores mostrados en el resumen y los campos."],
+      ["anonymous", "boolean", "Oculta los campos marcados como sensibles."],
+      ["disabled / readOnly", "boolean", "Desactiva el formulario o lo hace de solo lectura."],
+      ["submitLabel", "ReactNode", "Contenido del botón de envío."],
+      ["hideSubmit", "boolean", "Oculta el botón de envío."],
+      ["noValidate", "boolean", "Define el atributo HTML noValidate."],
+      ["className / style", "string / CSSProperties", "Personaliza el formulario."],
+      ["aria-label", "string", "Nombre accesible del formulario."],
+    ],
+  },
+  "form-answers": {
+    name: "FormAnswers",
+    eyebrow: "Presentación",
+    description:
+      "Muestra las respuestas enviadas con formato por tipo, agrupación de selecciones múltiples y protección de valores sensibles.",
+    code: answersCode,
+    props: [
+      ["answers", "readonly FormAnswer[]", "Respuestas producidas por el renderer."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Idioma y formatos regionales."],
+      ["emptyMessage", "ReactNode", "Contenido mostrado cuando no hay respuestas."],
+      ["className / style", "string / CSSProperties", "Personaliza el elemento raíz."],
+      ["aria-label", "string", "Nombre accesible de la sección."],
+    ],
+  },
+} as const
+
+const componentPagesFr = {
+  "form-builder": {
+    name: "FormBuilder",
+    eyebrow: "Éditeur visuel",
+    description:
+      "Crée et modifie la définition d’un formulaire. Il permet d’ajouter des champs depuis la palette, de les réorganiser, de les dupliquer et de configurer chaque élément.",
+    code: builderCode,
+    props: [
+      ["fields", "FormField[]", "Champs en mode contrôlé."],
+      ["defaultFields", "FormField[]", "Champs initiaux en mode non contrôlé."],
+      ["onChange", "(fields) => void", "Exécuté après chaque modification."],
+      ["allowedTypes", "readonly FieldType[]", "Limite les types de champ de la palette."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Langue et formats régionaux."],
+      ["currencyPrefix", "string", "Préfixe monétaire initial."],
+      ["phonePrefix", "string", "Préfixe téléphonique initial."],
+      ["disabled", "boolean", "Empêche les modifications dans le constructeur."],
+      ["emptyMessage", "ReactNode", "Contenu affiché lorsqu’il n’y a aucun champ."],
+      ["className / style", "string / CSSProperties", "Personnalise l’élément racine."],
+      ["aria-label", "string", "Nom accessible du constructeur."],
+    ],
+  },
+  "form-renderer": {
+    name: "FormRenderer",
+    eyebrow: "Saisie",
+    description:
+      "Transforme une définition FormField[] en formulaire accessible et produit ses réponses sous forme de FormAnswer[].",
+    code: rendererCode,
+    props: [
+      ["fields", "FormField[]", "Définition des champs."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Langue et formats régionaux."],
+      ["value", "FormAnswer[]", "Réponses en mode contrôlé."],
+      ["defaultValue", "FormAnswer[]", "Réponses initiales en mode non contrôlé."],
+      ["onChange", "(answers) => void", "Exécuté lorsqu’une réponse change."],
+      ["onSubmit", "(answers, event) => void", "Exécuté lors de l’envoi du formulaire."],
+      ["errors", "FormError[]", "Erreurs affichées dans le résumé et les champs."],
+      ["anonymous", "boolean", "Masque les champs marqués comme sensibles."],
+      ["disabled / readOnly", "boolean", "Désactive le formulaire ou le rend accessible en lecture seule."],
+      ["submitLabel", "ReactNode", "Contenu du bouton d’envoi."],
+      ["hideSubmit", "boolean", "Masque le bouton d’envoi."],
+      ["noValidate", "boolean", "Définit l’attribut HTML noValidate."],
+      ["className / style", "string / CSSProperties", "Personnalise le formulaire."],
+      ["aria-label", "string", "Nom accessible du formulaire."],
+    ],
+  },
+  "form-answers": {
+    name: "FormAnswers",
+    eyebrow: "Présentation",
+    description:
+      "Affiche les réponses envoyées avec un formatage par type, le regroupement des choix multiples et la protection des valeurs sensibles.",
+    code: answersCode,
+    props: [
+      ["answers", "readonly FormAnswer[]", "Réponses produites par le renderer."],
+      ["locale", '"pt-BR" | "en-US" | "es-ES" | "fr-FR" | FormBuilderLocale', "Langue et formats régionaux."],
+      ["emptyMessage", "ReactNode", "Contenu affiché lorsqu’il n’y a aucune réponse."],
+      ["className / style", "string / CSSProperties", "Personnalise l’élément racine."],
+      ["aria-label", "string", "Nom accessible de la section."],
+    ],
+  },
+} as const
+
 function ComponentPage({
   route,
   onNavigate,
@@ -350,17 +849,26 @@ function ComponentPage({
   route: Exclude<WikiRoute, "overview">
   onNavigate: (route: WikiRoute) => void
 }) {
-  const page = componentPages[route]
+  const { locale } = useDemoLocale()
+  const text = useWikiText()
+  const page =
+    locale === "en-US"
+      ? componentPagesEn[route]
+      : locale === "es-ES"
+        ? componentPagesEs[route]
+        : locale === "fr-FR"
+          ? componentPagesFr[route]
+          : componentPages[route]
 
   return (
     <section className="wiki wiki-component-page">
       <div className="wiki-component-hero" id="inicio">
         <div className="wiki-breadcrumb">
           <WikiLink to="overview" onNavigate={onNavigate}>
-            Documentação
+            {text("Documentação", "Documentation")}
           </WikiLink>
           <span>/</span>
-          <span>Componentes</span>
+          <span>{text("Componentes", "Components")}</span>
         </div>
         <span className="demo-kicker">{page.eyebrow}</span>
         <h2>{page.name}</h2>
@@ -369,10 +877,10 @@ function ComponentPage({
 
       <div className="wiki-layout wiki-component-layout">
         <aside className="wiki-sidebar">
-          <strong>Componentes</strong>
-          <nav aria-label="Documentação dos componentes">
+          <strong>{text("Componentes", "Components")}</strong>
+          <nav aria-label={text("Documentação dos componentes", "Component documentation")}>
             <WikiLink to="overview" onNavigate={onNavigate}>
-              Visão geral
+              {text("Visão geral", "Overview")}
             </WikiLink>
             <WikiLink
               className={route === "form-builder" ? "active" : ""}
@@ -401,10 +909,17 @@ function ComponentPage({
         <article className="wiki-content">
           <section className="wiki-section">
             <span className="wiki-section__number">01</span>
-            <h3>Uso</h3>
+            <h3>{text("Uso", "Usage")}</h3>
             <p>
-              Importe o componente e os tipos diretamente de <code>react-form-builder</code>. O CSS já acompanha o
-              entrypoint principal.
+              {text(
+                "Importe o componente e os tipos diretamente de ",
+                "Import the component and types directly from ",
+              )}
+              <code>react-form-builder</code>.{" "}
+              {text(
+                "O CSS já acompanha o entrypoint principal.",
+                "CSS is already included by the main entry point.",
+              )}
             </p>
             <CodeBlock code={page.code} />
           </section>
@@ -412,24 +927,33 @@ function ComponentPage({
           {route === "form-builder" && (
             <section className="wiki-section">
               <span className="wiki-section__number">02</span>
-              <h3>Configuração do construtor</h3>
+              <h3>{text("Configuração do construtor", "Builder configuration")}</h3>
               <p>
-                No modo controlado, <code>fields</code> é a fonte de verdade. Use <code>allowedTypes</code> para
-                apresentar somente os tipos aceitos pelo seu produto.
+                {text("No modo controlado, ", "In controlled mode, ")}
+                <code>fields</code>
+                {text(
+                  " é a fonte de verdade. Use ",
+                  " is the source of truth. Use ",
+                )}
+                <code>allowedTypes</code>
+                {text(
+                  " para apresentar somente os tipos aceitos pelo seu produto.",
+                  " to show only the field types supported by your product.",
+                )}
               </p>
               <CodeBlock code={builderTypesCode} />
               <div className="wiki-grid">
                 <div className="wiki-card">
-                  <strong>Adicionar</strong>
-                  <p>Arraste um tipo da paleta ou use duplo clique para inseri-lo no final.</p>
+                  <strong>{text("Adicionar", "Add")}</strong>
+                  <p>{text("Arraste um tipo da paleta ou use duplo clique para inseri-lo no final.", "Drag a type from the palette or double-click it to append it.")}</p>
                 </div>
                 <div className="wiki-card">
-                  <strong>Editar</strong>
-                  <p>Rótulo, descrição, obrigatoriedade, sensibilidade e limites ficam no editor do campo.</p>
+                  <strong>{text("Editar", "Edit")}</strong>
+                  <p>{text("Rótulo, descrição, obrigatoriedade, sensibilidade e limites ficam no editor do campo.", "Labels, descriptions, required and sensitive flags, and limits are configured in the field editor.")}</p>
                 </div>
                 <div className="wiki-card">
-                  <strong>Ordenar</strong>
-                  <p>Arraste os cartões ou use os controles de movimento. A ordem é normalizada automaticamente.</p>
+                  <strong>{text("Ordenar", "Reorder")}</strong>
+                  <p>{text("Arraste os cartões ou use os controles de movimento. A ordem é normalizada automaticamente.", "Drag the cards or use the move controls. Order is normalized automatically.")}</p>
                 </div>
               </div>
             </section>
@@ -438,17 +962,20 @@ function ComponentPage({
           {route === "form-renderer" && (
             <section className="wiki-section">
               <span className="wiki-section__number">02</span>
-              <h3>Modos de exibição</h3>
+              <h3>{text("Modos de exibição", "Display modes")}</h3>
               <p>
-                O mesmo componente cobre preenchimento, consulta e fluxos anônimos. Os aliases <code>anonimo</code> e{" "}
-                <code>formErrors</code> existem apenas para compatibilidade.
+                {text("O mesmo componente cobre preenchimento, consulta e fluxos anônimos. Os aliases ", "The same component supports data entry, read-only, and anonymous flows. The aliases ")}
+                <code>anonimo</code> {text("e", "and")} <code>formErrors</code>{" "}
+                {text("existem apenas para compatibilidade.", "exist for compatibility only.")}
               </p>
               <CodeBlock code={rendererModesCode} />
               <div className="wiki-note wiki-note--compact">
-                <strong>Validação explícita</strong>
+                <strong>{text("Validação explícita", "Explicit validation")}</strong>
                 <p>
-                  O renderer não decide quando um valor é válido. Execute <code>validateForm</code> no envio e devolva
-                  o array resultante em <code>errors</code>.
+                  {text("O renderer não decide quando um valor é válido. Execute ", "The renderer does not decide when a value is valid. Run ")}
+                  <code>validateForm</code>
+                  {text(" no envio e devolva o array resultante em ", " on submit and pass the resulting array to ")}
+                  <code>errors</code>.
                 </p>
               </div>
             </section>
@@ -457,24 +984,25 @@ function ComponentPage({
           {route === "form-answers" && (
             <section className="wiki-section">
               <span className="wiki-section__number">02</span>
-              <h3>Formatação e agrupamento</h3>
+              <h3>{text("Formatação e agrupamento", "Formatting and grouping")}</h3>
               <p>
-                Respostas com o mesmo <code>fieldId</code> são agrupadas. Sem identificador, o rótulo é usado como
-                chave. A propriedade <code>order</code> preserva a sequência do formulário.
+                {text("Respostas com o mesmo ", "Answers with the same ")}<code>fieldId</code>
+                {text(" são agrupadas. Sem identificador, o rótulo é usado como chave. A propriedade ", " are grouped. Without an ID, the label becomes the key. The ")}
+                <code>order</code>{text(" preserva a sequência do formulário.", " property preserves form order.")}
               </p>
               <CodeBlock code={answersFormattingCode} language="ts" />
               <div className="wiki-grid">
                 <div className="wiki-card">
-                  <strong>Datas</strong>
-                  <p>Valores ISO como 2026-07-25 são apresentados no formato 25/07/2026.</p>
+                  <strong>{text("Datas", "Dates")}</strong>
+                  <p>{text("Valores ISO como 2026-07-25 são apresentados no formato 25/07/2026.", "ISO values such as 2026-07-25 are displayed as 07/25/2026 in en-US.")}</p>
                 </div>
                 <div className="wiki-card">
-                  <strong>Múltipla escolha</strong>
-                  <p>Os valores de checkbox são reunidos em uma lista sob o mesmo rótulo.</p>
+                  <strong>{text("Múltipla escolha", "Multiple choice")}</strong>
+                  <p>{text("Os valores de checkbox são reunidos em uma lista sob o mesmo rótulo.", "Checkbox values are grouped into a list under the same label.")}</p>
                 </div>
                 <div className="wiki-card">
-                  <strong>Sensíveis</strong>
-                  <p>Quando sensitive é verdadeiro, o conteúdo é substituído por “Resposta ocultada”.</p>
+                  <strong>{text("Sensíveis", "Sensitive")}</strong>
+                  <p>{text("Quando sensitive é verdadeiro, o conteúdo é substituído por “Resposta ocultada”.", "When sensitive is true, the content is replaced with “Answer hidden”.")}</p>
                 </div>
               </div>
             </section>
@@ -482,19 +1010,19 @@ function ComponentPage({
 
           <section className="wiki-section">
             <span className="wiki-section__number">03</span>
-            <h3>Propriedades</h3>
+            <h3>{text("Propriedades", "Properties")}</h3>
             <PropsTable rows={page.props.map((row) => [...row])} />
           </section>
 
           <section className="wiki-section wiki-next-section">
             <span className="wiki-section__number">04</span>
-            <h3>Continue explorando</h3>
+            <h3>{text("Continue explorando", "Keep exploring")}</h3>
             <div className="wiki-component-links">
               {(
                 [
-                  ["form-builder", "FormBuilder", "Edite a estrutura do formulário."],
-                  ["form-renderer", "FormRenderer", "Colete e valide as respostas."],
-                  ["form-answers", "FormAnswers", "Apresente o resultado enviado."],
+                  ["form-builder", "FormBuilder", text("Edite a estrutura do formulário.", "Edit the form structure.")],
+                  ["form-renderer", "FormRenderer", text("Colete e valide as respostas.", "Collect and validate answers.")],
+                  ["form-answers", "FormAnswers", text("Apresente o resultado enviado.", "Display submitted results.")],
                 ] as const
               )
                 .filter(([itemRoute]) => itemRoute !== route)
@@ -514,6 +1042,8 @@ function ComponentPage({
 }
 
 export function Wiki() {
+  const text = useWikiText()
+  const { locale } = useDemoLocale()
   const [route, setRoute] = useState<WikiRoute>(getWikiRoute)
 
   useEffect(() => {
@@ -537,128 +1067,152 @@ export function Wiki() {
     <section className="wiki">
       <div className="wiki-hero" id="inicio">
         <div>
-          <span className="demo-kicker">Documentação</span>
-          <h2>Crie formulários dinâmicos em React</h2>
+          <span className="demo-kicker">{text("Documentação", "Documentation")}</span>
+          <h2>{text("Crie formulários dinâmicos em React", "Build dynamic forms in React")}</h2>
           <p>
-            Um guia prático da instalação ao envio: construa campos visualmente, renderize o formulário e apresente as
-            respostas usando uma API tipada e sem dependências de interface.
+            {text(
+              "Um guia prático da instalação ao envio: construa campos visualmente, renderize o formulário e apresente as respostas usando uma API tipada e sem dependências de interface.",
+              "A practical guide from installation to submission: build fields visually, render the form, and display answers with a typed API and no UI dependencies.",
+            )}
           </p>
-          <div className="wiki-tags" aria-label="Características">
+          <div
+            className="wiki-tags"
+            aria-label={text("Características", "Features", "Características")}
+          >
             <span>React 18+</span>
             <span>TypeScript</span>
             <span>ESM</span>
-            <span>CSS isolado</span>
+            <span>{text("CSS isolado", "Scoped CSS")}</span>
           </div>
         </div>
         <div className="wiki-install">
-          <span>Instale o pacote</span>
+          <span>{text("Instale o pacote", "Install the package")}</span>
           <CodeBlock code={installCode} language="terminal" />
         </div>
       </div>
 
       <div className="wiki-layout">
         <aside className="wiki-sidebar">
-          <strong>Nesta página</strong>
-          <nav aria-label="Sumário da documentação">
-            <a href="#primeiros-passos">Primeiros passos</a>
-            <a href="#fluxo">Como funciona</a>
-            <a href="#campos">Tipos de campo</a>
-            <a href="#componentes">Componentes</a>
-            <a href="#respostas">Respostas e validação</a>
+          <strong>{text("Nesta página", "On this page")}</strong>
+          <nav aria-label={text("Sumário da documentação", "Documentation contents")}>
+            <a href="#primeiros-passos">{text("Primeiros passos", "Getting started")}</a>
+            <a href="#fluxo">{text("Como funciona", "How it works")}</a>
+            <a href="#campos">{text("Tipos de campo", "Field types")}</a>
+            <a href="#componentes">{text("Componentes", "Components")}</a>
+            <a href="#respostas">{text("Respostas e validação", "Answers and validation")}</a>
             <a href="#helpers">Helpers</a>
-            <a href="#estilos">Personalização</a>
-            <a href="#compatibilidade">Compatibilidade</a>
+            <a href="#estilos">{text("Personalização", "Customization")}</a>
+            <a href="#compatibilidade">{text("Compatibilidade", "Compatibility")}</a>
           </nav>
         </aside>
 
         <article className="wiki-content">
           <section id="primeiros-passos" className="wiki-section">
             <span className="wiki-section__number">01</span>
-            <h3>Primeiros passos</h3>
+            <h3>{text("Primeiros passos", "Getting started")}</h3>
             <p>
-              O entrypoint principal já inclui o CSS da biblioteca. Se o seu bundler exigir uma importação explícita,
-              use <code>import "react-form-builder/styles.css"</code>.
+              {text("O entrypoint principal já inclui o CSS da biblioteca. Se o seu bundler exigir uma importação explícita, use ", "The main entry point includes the library CSS. If your bundler requires an explicit import, use ")}
+              <code>import "react-form-builder/styles.css"</code>.
             </p>
 
-            <h4>1. Construa a definição</h4>
+            <h4>{text("1. Construa a definição", "1. Build the definition")}</h4>
             <p>
-              O <code>FormBuilder</code> recebe um array de campos e devolve a nova definição a cada edição.
+              {text("O ", "The ")}<code>FormBuilder</code>{text(" recebe um array de campos e devolve a nova definição a cada edição.", " receives an array of fields and returns a new definition after each edit.")}
             </p>
             <CodeBlock code={builderCode} />
 
-            <h4>2. Renderize e valide</h4>
+            <h4>{text("2. Renderize e valide", "2. Render and validate")}</h4>
             <p>
-              Passe a mesma definição ao <code>FormRenderer</code>. As respostas podem ficar no seu estado e ser
-              enviadas para qualquer API.
+              {text("Passe a mesma definição ao ", "Pass the same definition to ")}<code>FormRenderer</code>.
+              {text(" As respostas podem ficar no seu estado e ser enviadas para qualquer API.", " Answers can live in your state and be sent to any API.")}
             </p>
             <CodeBlock code={rendererCode} />
 
-            <h4>3. Mostre o resultado</h4>
+            <h4>{text("3. Mostre o resultado", "3. Display the result")}</h4>
             <p>
-              O <code>FormAnswers</code> formata datas, valores monetários e telefones, agrupa múltiplas escolhas e
-              oculta o conteúdo de respostas sensíveis.
+              {text("O ", "The ")}<code>FormAnswers</code>
+              {text(" formata datas, valores monetários e telefones, agrupa múltiplas escolhas e oculta o conteúdo de respostas sensíveis.", " formats dates, currency, and phone values, groups multiple choices, and hides sensitive answers.")}
             </p>
             <CodeBlock code={answersCode} />
 
             <div className="wiki-note">
-              <strong>Controlado ou não controlado?</strong>
+              <strong>{text("Controlado ou não controlado?", "Controlled or uncontrolled?")}</strong>
               <p>
-                Use <code>fields</code>/<code>value</code> quando o estado pertence à aplicação. Para uma integração
-                mais simples, use <code>defaultFields</code>/<code>defaultValue</code>.
+                {text("Use ", "Use ")}<code>fields</code>/<code>value</code>
+                {text(" quando o estado pertence à aplicação. Para uma integração mais simples, use ", " when state belongs to the application. For a simpler integration, use ")}
+                <code>defaultFields</code>/<code>defaultValue</code>.
               </p>
               <CodeBlock code={uncontrolledCode} />
+            </div>
+
+            <div className="wiki-note">
+              <strong>{text("Idiomas e formatos regionais", "Languages and regional formats")}</strong>
+              <p>
+                {text(
+                  "Use o provider para aplicar um locale à árvore inteira, ou a prop locale em um componente. Os objetos exportados também servem como base tipada para novas traduções.",
+                  "Use the provider to apply a locale to the entire tree, or the locale prop on one component. Exported locale objects are also typed foundations for additional languages.",
+                )}
+              </p>
+              <CodeBlock code={localeCode} />
             </div>
           </section>
 
           <section id="fluxo" className="wiki-section">
             <span className="wiki-section__number">02</span>
-            <h3>Como a biblioteca funciona</h3>
+            <h3>{text("Como a biblioteca funciona", "How the library works")}</h3>
             <div className="wiki-flow">
               <div>
                 <span>1</span>
-                <strong>Definição</strong>
-                <p>O builder cria um array portátil de <code>FormField</code>.</p>
+                <strong>{text("Definição", "Definition")}</strong>
+                <p>{text("O builder cria um array portátil de ", "The builder creates a portable ")}<code>FormField</code>{text(".", " array.")}</p>
               </div>
               <i aria-hidden="true">→</i>
               <div>
                 <span>2</span>
-                <strong>Preenchimento</strong>
-                <p>O renderer transforma campos em controles e produz <code>FormAnswer[]</code>.</p>
+                <strong>{text("Preenchimento", "Data entry")}</strong>
+                <p>{text("O renderer transforma campos em controles e produz ", "The renderer turns fields into controls and produces ")}<code>FormAnswer[]</code>.</p>
               </div>
               <i aria-hidden="true">→</i>
               <div>
                 <span>3</span>
-                <strong>Saída</strong>
-                <p>Valide, persista na sua API ou apresente com <code>FormAnswers</code>.</p>
+                <strong>{text("Saída", "Output")}</strong>
+                <p>{text("Valide, persista na sua API ou apresente com ", "Validate, persist to your API, or display with ")}<code>FormAnswers</code>.</p>
               </div>
             </div>
 
-            <h4>Contrato de um campo</h4>
+            <h4>{text("Contrato de um campo", "Field contract")}</h4>
             <CodeBlock code={fieldCode} />
             <p className="wiki-caption">
-              <code>id</code> é opcional, mas recomendado para relacionar respostas sem depender do rótulo.{" "}
-              <code>order</code> define a sequência visual.
+              <code>id</code>{text(" é opcional, mas recomendado para relacionar respostas sem depender do rótulo. ", " is optional but recommended for matching answers without relying on labels. ")}
+              <code>order</code>{text(" define a sequência visual.", " defines the visual order.")}
             </p>
           </section>
 
           <section id="campos" className="wiki-section">
             <span className="wiki-section__number">03</span>
-            <h3>Tipos de campo</h3>
+            <h3>{text("Tipos de campo", "Field types")}</h3>
             <p>
-              Restrinja a paleta do construtor com <code>allowedTypes</code> quando seu produto aceitar apenas parte do
-              catálogo.
+              {text("Restrinja a paleta do construtor com ", "Limit the builder palette with ")}<code>allowedTypes</code>
+              {text(" quando seu produto aceitar apenas parte do catálogo.", " when your product supports only part of the catalog. In en-US, CPF and CNPJ are hidden and CEP is presented as ZIP code.")}
             </p>
             <div className="wiki-table-wrap">
               <table className="wiki-table">
                 <thead>
                   <tr>
-                    <th>Tipo</th>
-                    <th>Uso</th>
-                    <th>Configurações relevantes</th>
+                    <th>{text("Tipo", "Type")}</th>
+                    <th>{text("Uso", "Usage")}</th>
+                    <th>{text("Configurações relevantes", "Relevant settings")}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {fieldTypes.map(([type, description, settings]) => (
+                  {(locale === "en-US"
+                    ? fieldTypesEn
+                    : locale === "es-ES"
+                      ? fieldTypesEs
+                      : locale === "fr-FR"
+                        ? fieldTypesFr
+                        : fieldTypes
+                  ).map(([type, description, settings]) => (
                     <tr key={type}>
                       <td>
                         <code>{type}</code>
@@ -671,32 +1225,34 @@ export function Wiki() {
               </table>
             </div>
             <div className="wiki-note wiki-note--compact">
-              <strong>Opções e valores padrão</strong>
+              <strong>{text("Opções e valores padrão", "Options and default values")}</strong>
               <p>
-                Em campos de seleção, cada item usa <code>{`{ order, value, selected? }`}</code>. Uma opção marcada
-                com <code>selected</code> entra nas respostas iniciais. <code>checkbox-group</code> aceita várias.
+                {text("Em campos de seleção, cada item usa ", "In choice fields, each item uses ")}<code>{`{ order, value, selected? }`}</code>.
+                {text(" Uma opção marcada com ", " An option marked as ")}<code>selected</code>
+                {text(" entra nas respostas iniciais. ", " is included in the initial answers. ")}<code>checkbox-group</code>
+                {text(" aceita várias.", " supports multiple values.")}
               </p>
             </div>
           </section>
 
           <section id="componentes" className="wiki-section">
             <span className="wiki-section__number">04</span>
-            <h3>Referência dos componentes</h3>
-            <p>Cada componente possui uma página própria com exemplos, comportamentos e referência completa de props.</p>
+            <h3>{text("Referência dos componentes", "Component reference")}</h3>
+            <p>{text("Cada componente possui uma página própria com exemplos, comportamentos e referência completa de props.", "Each component has its own page with examples, behavior, and a complete prop reference.")}</p>
             <div className="wiki-component-links wiki-component-links--overview">
               <WikiLink to="form-builder" onNavigate={navigate}>
                 <span>FormBuilder</span>
-                <small>Construa e edite a definição do formulário.</small>
+                <small>{text("Construa e edite a definição do formulário.", "Build and edit the form definition.")}</small>
                 <i aria-hidden="true">→</i>
               </WikiLink>
               <WikiLink to="form-renderer" onNavigate={navigate}>
                 <span>FormRenderer</span>
-                <small>Renderize campos, colete valores e mostre erros.</small>
+                <small>{text("Renderize campos, colete valores e mostre erros.", "Render fields, collect values, and display errors.")}</small>
                 <i aria-hidden="true">→</i>
               </WikiLink>
               <WikiLink to="form-answers" onNavigate={navigate}>
                 <span>FormAnswers</span>
-                <small>Agrupe, proteja e apresente as respostas.</small>
+                <small>{text("Agrupe, proteja e apresente as respostas.", "Group, protect, and display answers.")}</small>
                 <i aria-hidden="true">→</i>
               </WikiLink>
             </div>
@@ -704,32 +1260,36 @@ export function Wiki() {
 
           <section id="respostas" className="wiki-section">
             <span className="wiki-section__number">05</span>
-            <h3>Respostas, validação e privacidade</h3>
+            <h3>{text("Respostas, validação e privacidade", "Answers, validation, and privacy")}</h3>
             <p>
-              Cada resposta carrega os dados necessários para ser persistida e apresentada sem consultar novamente o
-              campo original. Múltiplas escolhas geram uma resposta por opção.
+              {text(
+                "Cada resposta carrega os dados necessários para ser persistida e apresentada sem consultar novamente o campo original. Múltiplas escolhas geram uma resposta por opção.",
+                "Each answer contains the data needed to persist and display it without looking up the original field. Multiple choices produce one answer per option.",
+              )}
             </p>
             <CodeBlock code={answerShapeCode} language="ts" />
 
             <div className="wiki-grid">
               <div className="wiki-card">
-                <strong>Validação</strong>
+                <strong>{text("Validação", "Validation")}</strong>
                 <p>
-                  <code>validateForm</code> verifica campos obrigatórios e <code>minlength</code> em textos. O retorno é
-                  sempre <code>FormError[]</code>.
+                  <code>validateForm</code>{text(" verifica campos obrigatórios e ", " checks required fields and text ")}
+                  <code>minlength</code>{text(" em textos. O retorno é sempre ", ". It always returns ")}
+                  <code>FormError[]</code>.
                 </p>
               </div>
               <div className="wiki-card">
-                <strong>Campos sensíveis</strong>
+                <strong>{text("Campos sensíveis", "Sensitive fields")}</strong>
                 <p>
-                  Marque o campo com <code>sensitive: true</code>. O resumo oculta o valor, mas preserva a indicação de
-                  conteúdo protegido.
+                  {text("Marque o campo com ", "Mark the field with ")}<code>sensitive: true</code>.
+                  {text(" O resumo oculta o valor, mas preserva a indicação de conteúdo protegido.", " The summary hides its value while preserving the protected-content indicator.")}
                 </p>
               </div>
               <div className="wiki-card">
-                <strong>Modo anônimo</strong>
+                <strong>{text("Modo anônimo", "Anonymous mode")}</strong>
                 <p>
-                  Com <code>anonymous</code>, campos sensíveis não são renderizados nem considerados na validação.
+                  {text("Com ", "With ")}<code>anonymous</code>
+                  {text(", campos sensíveis não são renderizados nem considerados na validação.", ", sensitive fields are neither rendered nor included in validation.")}
                 </p>
               </div>
             </div>
@@ -738,10 +1298,10 @@ export function Wiki() {
 
           <section id="helpers" className="wiki-section">
             <span className="wiki-section__number">06</span>
-            <h3>Helpers e constantes</h3>
+            <h3>{text("Helpers e constantes", "Helpers and constants")}</h3>
             <div className="wiki-helper-groups">
               <div>
-                <strong>Campos e opções</strong>
+                <strong>{text("Campos e opções", "Fields and options")}</strong>
                 <code>createField</code>
                 <code>duplicateField</code>
                 <code>normalizeFields</code>
@@ -749,7 +1309,7 @@ export function Wiki() {
                 <code>isFieldType</code>
               </div>
               <div>
-                <strong>Respostas</strong>
+                <strong>{text("Respostas", "Answers")}</strong>
                 <code>createAnswer</code>
                 <code>answerForField</code>
                 <code>answersForField</code>
@@ -758,7 +1318,7 @@ export function Wiki() {
                 <code>toggleFieldAnswer</code>
               </div>
               <div>
-                <strong>Validação e máscaras</strong>
+                <strong>{text("Validação e máscaras", "Validation and masks")}</strong>
                 <code>validateForm</code>
                 <code>validate</code>
                 <code>maskDigits</code>
@@ -766,21 +1326,26 @@ export function Wiki() {
                 <code>maskPhone</code>
               </div>
               <div>
-                <strong>Catálogo</strong>
+                <strong>{text("Catálogo", "Catalog")}</strong>
                 <code>FIELD_TYPES</code>
                 <code>FIELD_CATALOG</code>
                 <code>DEFAULT_CURRENCY_PREFIX</code>
                 <code>DEFAULT_PHONE_PREFIX</code>
+                <code>PT_BR_LOCALE</code>
+                <code>EN_US_LOCALE</code>
+                <code>ES_ES_LOCALE</code>
+                <code>FR_FR_LOCALE</code>
+                <code>FormBuilderLocaleProvider</code>
               </div>
             </div>
           </section>
 
           <section id="estilos" className="wiki-section">
             <span className="wiki-section__number">07</span>
-            <h3>Personalização visual</h3>
+            <h3>{text("Personalização visual", "Visual customization")}</h3>
             <p>
-              As classes internas usam o prefixo <code>rfb-</code>. Para temas, prefira sobrescrever as variáveis CSS
-              em uma classe da sua aplicação.
+              {text("As classes internas usam o prefixo ", "Internal classes use the ")}<code>rfb-</code>
+              {text(" . Para temas, prefira sobrescrever as variáveis CSS em uma classe da sua aplicação.", " prefix. For themes, override the CSS variables in one of your application classes.")}
             </p>
             <CodeBlock code={themeCode} language="css" />
             <CodeBlock code={themeUsageCode} />
@@ -788,10 +1353,12 @@ export function Wiki() {
 
           <section id="compatibilidade" className="wiki-section">
             <span className="wiki-section__number">08</span>
-            <h3>Compatibilidade e aliases</h3>
+            <h3>{text("Compatibilidade e aliases", "Compatibility and aliases")}</h3>
             <p>
-              Para facilitar migrações, a biblioteca mantém nomes equivalentes. Em código novo, prefira sempre os
-              nomes da primeira coluna.
+              {text(
+                "Para facilitar migrações, a biblioteca mantém nomes equivalentes. Em código novo, prefira sempre os nomes da primeira coluna.",
+                "The library keeps equivalent names to simplify migrations. In new code, prefer the names in the first column.",
+              )}
             </p>
             <div className="wiki-aliases">
               <span>
@@ -814,9 +1381,9 @@ export function Wiki() {
               </span>
             </div>
             <div className="wiki-end">
-              <span>Pronto para experimentar?</span>
-              <p>Volte às abas da demo para construir um formulário e acompanhar o contrato gerado em tempo real.</p>
-              <a href="#inicio">Voltar ao início ↑</a>
+              <span>{text("Pronto para experimentar?", "Ready to try it?")}</span>
+              <p>{text("Volte às abas da demo para construir um formulário e acompanhar o contrato gerado em tempo real.", "Return to the demo tabs to build a form and inspect the generated contract in real time.")}</p>
+              <a href="#inicio">{text("Voltar ao início ↑", "Back to top ↑")}</a>
             </div>
           </section>
         </article>
