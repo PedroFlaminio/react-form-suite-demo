@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import type { MouseEvent, ReactNode } from "react"
-import { useDemoLocale } from "./i18n"
+import { useDemoLocale, type DemoLocale } from "./i18n"
 
 const wikiSpanish: Record<string, string> = {
   "Copied!": "¡Copiado!",
@@ -26,9 +26,7 @@ const wikiSpanish: Record<string, string> = {
   Reorder: "Ordenar",
   "Drag the cards or use the move controls. Order is normalized automatically.": "Arrastra las tarjetas o usa los controles de movimiento. El orden se normaliza automáticamente.",
   "Display modes": "Modos de visualización",
-  "The same component supports data entry, read-only, and anonymous flows. The aliases ": "El mismo componente admite introducción de datos, solo lectura y flujos anónimos. Los alias ",
-  and: "y",
-  "exist for compatibility only.": "solo existen por compatibilidad.",
+  "Use the component for data entry, read-only, disabled, and anonymous flows.": "Usa el componente para flujos de introducción de datos, solo lectura, desactivados y anónimos.",
   "Explicit validation": "Validación explícita",
   "The renderer does not decide when a value is valid. Run ": "El renderer no decide cuándo un valor es válido. Ejecuta ",
   " on submit and pass the resulting array to ": " al enviar y pasa el array resultante a ",
@@ -58,7 +56,6 @@ const wikiSpanish: Record<string, string> = {
   "Field types": "Tipos de campo",
   "Answers and validation": "Respuestas y validación",
   Customization: "Personalización",
-  Compatibility: "Compatibilidad",
   "The main entry point includes the library CSS. If your bundler requires an explicit import, use ": "El punto de entrada principal ya incluye el CSS de la biblioteca. Si tu bundler exige una importación explícita, usa ",
   "1. Build the definition": "1. Construye la definición",
   "The ": "El ",
@@ -116,8 +113,6 @@ const wikiSpanish: Record<string, string> = {
   "Visual customization": "Personalización visual",
   "Internal classes use the ": "Las clases internas usan el prefijo ",
   " prefix. For themes, override the CSS variables in one of your application classes.": ". Para los temas, sobrescribe las variables CSS en una clase de tu aplicación.",
-  "Compatibility and aliases": "Compatibilidad y alias",
-  "The library keeps equivalent names to simplify migrations. In new code, prefer the names in the first column.": "La biblioteca mantiene nombres equivalentes para facilitar las migraciones. En código nuevo, usa preferentemente los nombres de la primera columna.",
   "Ready to try it?": "¿Listo para probarlo?",
   "Return to the demo tabs to build a form and inspect the generated contract in real time.": "Vuelve a las pestañas de la demo para construir un formulario y consultar el contrato generado en tiempo real.",
   "Back to top ↑": "Volver arriba ↑",
@@ -147,9 +142,7 @@ const wikiFrench: Record<string, string> = {
   Reorder: "Réorganiser",
   "Drag the cards or use the move controls. Order is normalized automatically.": "Faites glisser les cartes ou utilisez les commandes de déplacement. L’ordre est normalisé automatiquement.",
   "Display modes": "Modes d’affichage",
-  "The same component supports data entry, read-only, and anonymous flows. The aliases ": "Le même composant gère la saisie, la lecture seule et les parcours anonymes. Les alias ",
-  and: "et",
-  "exist for compatibility only.": "existent uniquement pour assurer la compatibilité.",
+  "Use the component for data entry, read-only, disabled, and anonymous flows.": "Utilisez le composant pour la saisie, la lecture seule, les parcours désactivés et anonymes.",
   "Explicit validation": "Validation explicite",
   "The renderer does not decide when a value is valid. Run ": "Le renderer ne décide pas si une valeur est valide. Exécutez ",
   " on submit and pass the resulting array to ": " lors de l’envoi et transmettez le tableau obtenu à ",
@@ -179,7 +172,6 @@ const wikiFrench: Record<string, string> = {
   "Field types": "Types de champ",
   "Answers and validation": "Réponses et validation",
   Customization: "Personnalisation",
-  Compatibility: "Compatibilité",
   "The main entry point includes the library CSS. If your bundler requires an explicit import, use ": "Le point d’entrée principal inclut le CSS de la bibliothèque. Si votre bundler exige un import explicite, utilisez ",
   "1. Build the definition": "1. Construisez la définition",
   "The ": "Le ",
@@ -237,8 +229,6 @@ const wikiFrench: Record<string, string> = {
   "Visual customization": "Personnalisation visuelle",
   "Internal classes use the ": "Les classes internes utilisent le préfixe ",
   " prefix. For themes, override the CSS variables in one of your application classes.": ". Pour les thèmes, remplacez les variables CSS dans une classe de votre application.",
-  "Compatibility and aliases": "Compatibilité et alias",
-  "The library keeps equivalent names to simplify migrations. In new code, prefer the names in the first column.": "La bibliothèque conserve des noms équivalents pour simplifier les migrations. Dans le nouveau code, privilégiez les noms de la première colonne.",
   "Ready to try it?": "Prêt à essayer ?",
   "Return to the demo tabs to build a form and inspect the generated contract in real time.": "Revenez aux onglets de la démo pour construire un formulaire et consulter le contrat généré en temps réel.",
   "Back to top ↑": "Retour en haut ↑",
@@ -458,7 +448,7 @@ const fieldTypes = [
   ["date", "Data", "—"],
   ["cpf", "CPF com máscara", "—"],
   ["cnpj", "CNPJ com máscara", "—"],
-  ["cep", "CEP com máscara", "—"],
+  ["postal-code", "CEP com máscara", "—"],
   ["textarea", "Texto em várias linhas", "minlength, maxlength"],
   ["select", "Lista de seleção única", "formularioCampoOpcao"],
   ["radio-group", "Grupo de escolha única", "formularioCampoOpcao"],
@@ -471,7 +461,7 @@ const fieldTypesEn = [
   ["currency", "Currency with localized mask", "prefix (default: $)"],
   ["phone", "US phone number", "prefix (default: +1)"],
   ["date", "Date displayed as MM/DD/YYYY", "—"],
-  ["cep", "ZIP or ZIP+4 code", "—"],
+  ["postal-code", "ZIP or ZIP+4 code", "—"],
   ["textarea", "Multi-line text", "minlength, maxlength"],
   ["select", "Single-selection list", "formularioCampoOpcao"],
   ["radio-group", "Single-choice group", "formularioCampoOpcao"],
@@ -484,7 +474,7 @@ const fieldTypesEs = [
   ["currency", "Importe monetario con máscara localizada", "prefix (predeterminado: €)"],
   ["phone", "Teléfono español", "prefix (predeterminado: +34)"],
   ["date", "Fecha con formato DD/MM/YYYY", "—"],
-  ["cep", "Código postal de cinco dígitos", "—"],
+  ["postal-code", "Código postal de cinco dígitos", "—"],
   ["textarea", "Texto en varias líneas", "minlength, maxlength"],
   ["select", "Lista de selección única", "formularioCampoOpcao"],
   ["radio-group", "Grupo de elección única", "formularioCampoOpcao"],
@@ -497,7 +487,7 @@ const fieldTypesFr = [
   ["currency", "Montant avec masque localisé", "prefix (par défaut : €)"],
   ["phone", "Téléphone français", "prefix (par défaut : +33)"],
   ["date", "Date au format DD/MM/YYYY", "—"],
-  ["cep", "Code postal à cinq chiffres", "—"],
+  ["postal-code", "Code postal à cinq chiffres", "—"],
   ["textarea", "Texte sur plusieurs lignes", "minlength, maxlength"],
   ["select", "Liste à sélection unique", "formularioCampoOpcao"],
   ["radio-group", "Groupe à choix unique", "formularioCampoOpcao"],
@@ -543,12 +533,171 @@ const answerProps = [
   ["aria-label", "string", "Nome acessível da seção."],
 ]
 
+const wikiCodeReplacements: Record<DemoLocale, Array<[string, string]>> = {
+  "pt-BR": [
+    [
+      "// Applies one locale to every library component below the provider.",
+      "// Aplica um idioma a todos os componentes da biblioteca abaixo do provider.",
+    ],
+    [
+      "// A new language can provide a complete, typed locale definition.",
+      "// Um novo idioma pode fornecer uma definição de locale completa e tipada.",
+    ],
+    [
+      "// Override catalog, messages, defaults, masks, and formatDate as needed.",
+      "// Sobrescreva catálogo, mensagens, padrões, máscaras e formatDate conforme necessário.",
+    ],
+  ],
+  "en-US": [
+    ["EditorDeFormulario", "FormEditor"],
+    ["Editor do formulário", "Form editor"],
+    ["MeuFormulario", "MyForm"],
+    ["submitLabel=\"Enviar\"", "submitLabel=\"Submit\""],
+    ["// Envie nextAnswers para a sua API", "// Send nextAnswers to your API"],
+    ["export function Resumo", "export function Summary"],
+    ["Nenhuma resposta enviada.", "No answers submitted."],
+    ["label: \"E-mail\"", "label: \"Email\""],
+    ["Usaremos apenas para entrar em contato.", "We will only use it to contact you."],
+    ["voce@exemplo.com", "you@example.com"],
+    ["id: \"assunto\"", "id: \"subject\""],
+    ["label: \"Assunto\"", "label: \"Subject\""],
+    ["value: \"Suporte\"", "value: \"Support\""],
+    ["value: \"Comercial\"", "value: \"Sales\""],
+    ["camposIniciais", "initialFields"],
+    ["respostasIniciais", "initialAnswers"],
+    ["currencyPrefix=\"R$\"", "currencyPrefix=\"$\""],
+    ["phonePrefix=\"+55\"", "phonePrefix=\"+1\""],
+    [
+      "// Somente leitura: mostra os valores e remove o botão de envio",
+      "// Read-only: displays values and removes the submit button",
+    ],
+    [
+      "// Desabilitado: mantém o formulário visível, sem interação",
+      "// Disabled: keeps the form visible without interaction",
+    ],
+    [
+      "// Anônimo: remove campos marcados como sensitive",
+      "// Anonymous: removes fields marked as sensitive",
+    ],
+    ["formulario-da-marca", "brand-form"],
+    ["fieldId: \"data\"", "fieldId: \"date\""],
+    ["label: \"Data da visita\"", "label: \"Visit date\""],
+    ["fieldId: \"interesses\"", "fieldId: \"interests\""],
+    ["label: \"Interesses\"", "label: \"Interests\""],
+    ["value: \"Tecnologia\"", "value: \"Technology\""],
+  ],
+  "es-ES": [
+    ["Editor do formulário", "Editor del formulario"],
+    ["MeuFormulario", "MiFormulario"],
+    ["// Envie nextAnswers para a sua API", "// Envía nextAnswers a tu API"],
+    ["export function Resumo", "export function Resumen"],
+    ["Nenhuma resposta enviada.", "No se ha enviado ninguna respuesta."],
+    ["label: \"E-mail\"", "label: \"Correo electrónico\""],
+    ["Usaremos apenas para entrar em contato.", "Solo lo usaremos para contactar contigo."],
+    ["voce@exemplo.com", "tu@ejemplo.com"],
+    ["label: \"Assunto\"", "label: \"Asunto\""],
+    ["value: \"Suporte\"", "value: \"Soporte\""],
+    ["camposIniciais", "camposIniciales"],
+    ["respostasIniciais", "respuestasIniciales"],
+    ["currencyPrefix=\"R$\"", "currencyPrefix=\"€\""],
+    ["phonePrefix=\"+55\"", "phonePrefix=\"+34\""],
+    [
+      "// Somente leitura: mostra os valores e remove o botão de envio",
+      "// Solo lectura: muestra los valores y elimina el botón de envío",
+    ],
+    [
+      "// Desabilitado: mantém o formulário visível, sem interação",
+      "// Deshabilitado: mantiene el formulario visible, sin interacción",
+    ],
+    [
+      "// Anônimo: remove campos marcados como sensitive",
+      "// Anónimo: elimina los campos marcados como sensitive",
+    ],
+    ["formulario-da-marca", "formulario-de-marca"],
+    ["label: \"Data da visita\"", "label: \"Fecha de la visita\""],
+    ["label: \"Interesses\"", "label: \"Intereses\""],
+    ["value: \"Tecnologia\"", "value: \"Tecnología\""],
+    ["value: \"Design\"", "value: \"Diseño\""],
+    [
+      "// Applies one locale to every library component below the provider.",
+      "// Aplica un idioma a todos los componentes de la biblioteca bajo el provider.",
+    ],
+    [
+      "// A new language can provide a complete, typed locale definition.",
+      "// Un nuevo idioma puede proporcionar una definición de locale completa y tipada.",
+    ],
+    [
+      "// Override catalog, messages, defaults, masks, and formatDate as needed.",
+      "// Sobrescribe catálogo, mensajes, valores predeterminados, máscaras y formatDate según sea necesario.",
+    ],
+  ],
+  "fr-FR": [
+    ["EditorDeFormulario", "EditeurDeFormulaire"],
+    ["Editor do formulário", "Éditeur de formulaire"],
+    ["MeuFormulario", "MonFormulaire"],
+    ["submitLabel=\"Enviar\"", "submitLabel=\"Envoyer\""],
+    ["// Envie nextAnswers para a sua API", "// Envoyez nextAnswers à votre API"],
+    ["export function Resumo", "export function Resume"],
+    ["Nenhuma resposta enviada.", "Aucune réponse envoyée."],
+    ["Usaremos apenas para entrar em contato.", "Nous l’utiliserons uniquement pour vous contacter."],
+    ["voce@exemplo.com", "vous@exemple.fr"],
+    ["id: \"assunto\"", "id: \"sujet\""],
+    ["label: \"Assunto\"", "label: \"Sujet\""],
+    ["value: \"Suporte\"", "value: \"Assistance\""],
+    ["value: \"Comercial\"", "value: \"Commercial\""],
+    ["camposIniciais", "champsInitiaux"],
+    ["respostasIniciais", "reponsesInitiales"],
+    ["currencyPrefix=\"R$\"", "currencyPrefix=\"€\""],
+    ["phonePrefix=\"+55\"", "phonePrefix=\"+33\""],
+    [
+      "// Somente leitura: mostra os valores e remove o botão de envio",
+      "// Lecture seule : affiche les valeurs et retire le bouton d’envoi",
+    ],
+    [
+      "// Desabilitado: mantém o formulário visível, sem interação",
+      "// Désactivé : conserve le formulaire visible, sans interaction",
+    ],
+    [
+      "// Anônimo: remove campos marcados como sensitive",
+      "// Anonyme : retire les champs marqués comme sensitive",
+    ],
+    ["formulario-da-marca", "formulaire-de-marque"],
+    ["fieldId: \"data\"", "fieldId: \"date\""],
+    ["label: \"Data da visita\"", "label: \"Date de la visite\""],
+    ["fieldId: \"interesses\"", "fieldId: \"interets\""],
+    ["label: \"Interesses\"", "label: \"Centres d’intérêt\""],
+    ["value: \"Tecnologia\"", "value: \"Technologie\""],
+    [
+      "// Applies one locale to every library component below the provider.",
+      "// Applique une langue à tous les composants de la bibliothèque sous le provider.",
+    ],
+    [
+      "// A new language can provide a complete, typed locale definition.",
+      "// Une nouvelle langue peut fournir une définition de locale complète et typée.",
+    ],
+    [
+      "// Override catalog, messages, defaults, masks, and formatDate as needed.",
+      "// Remplacez le catalogue, les messages, les valeurs par défaut, les masques et formatDate selon vos besoins.",
+    ],
+  ],
+}
+
+function localizeWikiCode(code: string, locale: DemoLocale) {
+  return wikiCodeReplacements[locale].reduce(
+    (localizedCode, [source, translation]) =>
+      localizedCode.replaceAll(source, translation),
+    code,
+  )
+}
+
 function CodeBlock({ code, language = "tsx" }: { code: string; language?: string }) {
   const text = useWikiText()
+  const { locale } = useDemoLocale()
   const [copied, setCopied] = useState(false)
+  const localizedCode = localizeWikiCode(code, locale)
 
   const copy = async () => {
-    await navigator.clipboard.writeText(code)
+    await navigator.clipboard.writeText(localizedCode)
     setCopied(true)
     window.setTimeout(() => setCopied(false), 1600)
   }
@@ -562,7 +711,7 @@ function CodeBlock({ code, language = "tsx" }: { code: string; language?: string
         </button>
       </div>
       <pre>
-        <code>{code}</code>
+        <code>{localizedCode}</code>
       </pre>
     </div>
   )
@@ -964,9 +1113,10 @@ function ComponentPage({
               <span className="wiki-section__number">02</span>
               <h3>{text("Modos de exibição", "Display modes")}</h3>
               <p>
-                {text("O mesmo componente cobre preenchimento, consulta e fluxos anônimos. Os aliases ", "The same component supports data entry, read-only, and anonymous flows. The aliases ")}
-                <code>anonimo</code> {text("e", "and")} <code>formErrors</code>{" "}
-                {text("existem apenas para compatibilidade.", "exist for compatibility only.")}
+                {text(
+                  "Use o componente para fluxos de preenchimento, somente leitura, desabilitados e anônimos.",
+                  "Use the component for data entry, read-only, disabled, and anonymous flows.",
+                )}
               </p>
               <CodeBlock code={rendererModesCode} />
               <div className="wiki-note wiki-note--compact">
@@ -1102,7 +1252,6 @@ export function Wiki() {
             <a href="#respostas">{text("Respostas e validação", "Answers and validation")}</a>
             <a href="#helpers">Helpers</a>
             <a href="#estilos">{text("Personalização", "Customization")}</a>
-            <a href="#compatibilidade">{text("Compatibilidade", "Compatibility")}</a>
           </nav>
         </aside>
 
@@ -1320,7 +1469,6 @@ export function Wiki() {
               <div>
                 <strong>{text("Validação e máscaras", "Validation and masks")}</strong>
                 <code>validateForm</code>
-                <code>validate</code>
                 <code>maskDigits</code>
                 <code>maskCurrency</code>
                 <code>maskPhone</code>
@@ -1351,41 +1499,6 @@ export function Wiki() {
             <CodeBlock code={themeUsageCode} />
           </section>
 
-          <section id="compatibilidade" className="wiki-section">
-            <span className="wiki-section__number">08</span>
-            <h3>{text("Compatibilidade e aliases", "Compatibility and aliases")}</h3>
-            <p>
-              {text(
-                "Para facilitar migrações, a biblioteca mantém nomes equivalentes. Em código novo, prefira sempre os nomes da primeira coluna.",
-                "The library keeps equivalent names to simplify migrations. In new code, prefer the names in the first column.",
-              )}
-            </p>
-            <div className="wiki-aliases">
-              <span>
-                <code>FormRenderer</code> <i>→</i> <code>FormRender</code>
-              </span>
-              <span>
-                <code>FormField</code> <i>→</i> <code>FormFieldType</code>
-              </span>
-              <span>
-                <code>FormAnswer</code> <i>→</i> <code>Answer</code>
-              </span>
-              <span>
-                <code>FieldType</code> <i>→</i> <code>TipoType</code>
-              </span>
-              <span>
-                <code>anonymous</code> <i>→</i> <code>anonimo</code>
-              </span>
-              <span>
-                <code>errors</code> <i>→</i> <code>formErrors</code>
-              </span>
-            </div>
-            <div className="wiki-end">
-              <span>{text("Pronto para experimentar?", "Ready to try it?")}</span>
-              <p>{text("Volte às abas da demo para construir um formulário e acompanhar o contrato gerado em tempo real.", "Return to the demo tabs to build a form and inspect the generated contract in real time.")}</p>
-              <a href="#inicio">{text("Voltar ao início ↑", "Back to top ↑")}</a>
-            </div>
-          </section>
         </article>
       </div>
     </section>

@@ -48,7 +48,10 @@ const messages = {
     goToForm: "Ir para o formulário",
     portableContract: "Contrato portátil",
     jsonDefinition: "Definição em JSON",
+    answersJson: "Respostas em JSON",
+    viewJson: "Ver JSON",
     copyJson: "Copiar JSON",
+    closeModal: "Fechar modal",
     footer: "TypeScript · ESM · CSS isolado",
     initialFields: {
       name: "Nome completo",
@@ -115,7 +118,10 @@ const messages = {
     goToForm: "Go to form",
     portableContract: "Portable contract",
     jsonDefinition: "JSON definition",
+    answersJson: "Answers as JSON",
+    viewJson: "View JSON",
     copyJson: "Copy JSON",
+    closeModal: "Close modal",
     footer: "TypeScript · ESM · scoped CSS",
     initialFields: {
       name: "Full name",
@@ -182,7 +188,10 @@ const messages = {
     goToForm: "Ir al formulario",
     portableContract: "Contrato portable",
     jsonDefinition: "Definición JSON",
+    answersJson: "Respuestas en JSON",
+    viewJson: "Ver JSON",
     copyJson: "Copiar JSON",
+    closeModal: "Cerrar modal",
     footer: "TypeScript · ESM · CSS aislado",
     initialFields: {
       name: "Nombre completo",
@@ -249,7 +258,10 @@ const messages = {
     goToForm: "Accéder au formulaire",
     portableContract: "Contrat portable",
     jsonDefinition: "Définition JSON",
+    answersJson: "Réponses en JSON",
+    viewJson: "Voir le JSON",
     copyJson: "Copier le JSON",
+    closeModal: "Fermer la fenêtre",
     footer: "TypeScript · ESM · CSS isolé",
     initialFields: {
       name: "Nom complet",

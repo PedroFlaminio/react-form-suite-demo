@@ -98,7 +98,7 @@ function getInitialFields(locale: DemoLocale): FormField[] {
   {
     id: "postal-code",
     order: 8,
-    type: "cep",
+    type: "postal-code",
     label: text.postalCode,
     placeholder: text.postalCodePlaceholder,
   },
@@ -113,9 +113,14 @@ function getInitialFields(locale: DemoLocale): FormField[] {
   ]
 }
 
-type Tab = "builder" | "preview" | "answers" | "json"
+type Tab = "builder" | "preview" | "answers"
 type Theme = "light" | "dark"
 type Page = "demo" | "wiki"
+type JsonModalContent = {
+  eyebrow: string
+  title: string
+  value: unknown
+}
 
 function DemoIcon({ children }: { children: ReactNode }) {
   return (
@@ -167,6 +172,117 @@ function CheckIcon() {
   )
 }
 
+function CountryFlag({ locale }: { locale: DemoLocale }) {
+  if (locale === "pt-BR") {
+    return (
+      <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+        <rect width="32" height="22" fill="#229e45" />
+        <path d="M16 3 29 11 16 19 3 11Z" fill="#ffdf38" />
+        <circle cx="16" cy="11" r="5.2" fill="#2354a5" />
+        <path
+          d="M11.2 9.5c3.7-.7 7.5.1 9.7 2.1"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="1.1"
+        />
+      </svg>
+    )
+  }
+
+  if (locale === "en-US") {
+    return (
+      <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+        <rect width="32" height="22" fill="#fff" />
+        {[0, 4, 8, 12, 16, 20].map((y) => (
+          <rect width="32" height="2" y={y} fill="#d83a46" key={y} />
+        ))}
+        <rect width="14" height="12" fill="#24457f" />
+        {[3, 7, 11].flatMap((x) =>
+          [2.5, 6, 9.5].map((y) => (
+            <circle cx={x} cy={y} r="0.65" fill="#fff" key={`${x}-${y}`} />
+          )),
+        )}
+      </svg>
+    )
+  }
+
+  if (locale === "es-ES") {
+    return (
+      <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+        <rect width="32" height="22" fill="#f4c430" />
+        <rect width="32" height="5.5" fill="#c92b36" />
+        <rect width="32" height="5.5" y="16.5" fill="#c92b36" />
+        <rect x="9" y="8" width="2.8" height="6" rx="0.5" fill="#b52b35" />
+        <path d="M8.3 8h4.2M8.6 14h3.6" stroke="#b52b35" strokeWidth="0.8" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+      <rect width="32" height="22" fill="#fff" />
+      <rect width="10.67" height="22" fill="#224a9b" />
+      <rect x="21.33" width="10.67" height="22" fill="#e43d4c" />
+    </svg>
+  )
+}
+
+function JsonModal({
+  content,
+  messages,
+  onClose,
+}: {
+  content: JsonModalContent
+  messages: DemoMessages
+  onClose: () => void
+}) {
+  const json = JSON.stringify(content.value, null, 2)
+
+  return (
+    <div
+      className="demo-modal-backdrop"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <section
+        className="demo-json-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="demo-json-modal-title"
+      >
+        <div className="demo-json-modal__header">
+          <div>
+            <span className="demo-kicker">{content.eyebrow}</span>
+            <h2 id="demo-json-modal-title">{content.title}</h2>
+          </div>
+          <div className="demo-json-modal__actions">
+            <button
+              className="demo-copy"
+              type="button"
+              onClick={() => void navigator.clipboard.writeText(json)}
+            >
+              {messages.copyJson}
+            </button>
+            <button
+              className="demo-modal-close"
+              type="button"
+              onClick={onClose}
+              aria-label={messages.closeModal}
+              title={messages.closeModal}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+        </div>
+        <pre className="demo-code demo-json-modal__code">
+          <code>{json}</code>
+        </pre>
+      </section>
+    </div>
+  )
+}
+
 function LanguageSelect({
   locale,
   messages,
@@ -179,11 +295,11 @@ function LanguageSelect({
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const options = [
-    { value: "pt-BR", flag: "🇧🇷", label: messages.portuguese },
-    { value: "en-US", flag: "🇺🇸", label: messages.english },
-    { value: "es-ES", flag: "🇪🇸", label: messages.spanish },
-    { value: "fr-FR", flag: "🇫🇷", label: messages.french },
-  ] satisfies Array<{ value: DemoLocale; flag: string; label: string }>
+    { value: "pt-BR", label: messages.portuguese },
+    { value: "en-US", label: messages.english },
+    { value: "es-ES", label: messages.spanish },
+    { value: "fr-FR", label: messages.french },
+  ] satisfies Array<{ value: DemoLocale; label: string }>
   const selected = options.find((option) => option.value === locale) ?? options[0]
 
   useEffect(() => {
@@ -217,7 +333,7 @@ function LanguageSelect({
         aria-label={`${messages.language}: ${selected.label}`}
       >
         <span className="demo-language-select__flag" aria-hidden="true">
-          {selected.flag}
+          <CountryFlag locale={selected.value} />
         </span>
         <span className="demo-language-select__value">
           <strong>{selected.label}</strong>
@@ -263,7 +379,7 @@ function LanguageSelect({
                 key={option.value}
               >
                 <span className="demo-language-select__option-flag" aria-hidden="true">
-                  {option.flag}
+                  <CountryFlag locale={option.value} />
                 </span>
                 <span>
                   <strong>{option.label}</strong>
@@ -323,6 +439,7 @@ export function App() {
   const [answers, setAnswers] = useState<FormAnswer[]>([])
   const [errors, setErrors] = useState<FormError[]>([])
   const [submitted, setSubmitted] = useState<FormAnswer[] | null>(null)
+  const [jsonModal, setJsonModal] = useState<JsonModalContent | null>(null)
 
   const showTab = (nextTab: Tab) => {
     setTab(nextTab)
@@ -345,6 +462,21 @@ export function App() {
     return () => window.removeEventListener("popstate", updatePage)
   }, [])
 
+  useEffect(() => {
+    if (!jsonModal) return
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setJsonModal(null)
+    }
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    document.addEventListener("keydown", closeOnEscape)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener("keydown", closeOnEscape)
+    }
+  }, [jsonModal])
+
   const navigateTo = (nextPage: Page) => {
     const nextPath = nextPage === "wiki" ? "/wiki" : "/"
     window.history.pushState({}, "", nextPath)
@@ -359,6 +491,7 @@ export function App() {
     setAnswers([])
     setErrors([])
     setSubmitted(null)
+    setJsonModal(null)
   }
 
   const languageControl = (
@@ -437,10 +570,6 @@ export function App() {
               {theme === "light" ? <MoonIcon /> : <SunIcon />}
               {theme === "light" ? t.darkLabel : t.lightLabel}
             </button>
-            <div className="demo-badge">
-              <span>runtime</span>
-              <strong>React only</strong>
-            </div>
           </div>
         </div>
       </header>
@@ -455,9 +584,6 @@ export function App() {
         <button className={tab === "answers" ? "active" : ""} type="button" onClick={() => showTab("answers")}>
           <span>03</span> {t.answersTab}
         </button>
-        <button className={tab === "json" ? "active" : ""} type="button" onClick={() => showTab("json")}>
-          <span>04</span> JSON
-        </button>
       </nav>
 
       <main className="demo-content">
@@ -468,7 +594,22 @@ export function App() {
                 <span className="demo-kicker">{t.structure}</span>
                 <h2>{t.buildForm}</h2>
               </div>
-              <span>{t.fields(fields.length)}</span>
+              <div className="demo-section-heading__actions">
+                <span>{t.fields(fields.length)}</span>
+                <button
+                  className="demo-copy"
+                  type="button"
+                  onClick={() =>
+                    setJsonModal({
+                      eyebrow: t.portableContract,
+                      title: t.jsonDefinition,
+                      value: fields,
+                    })
+                  }
+                >
+                  {t.viewJson}
+                </button>
+              </div>
             </div>
             <FormBuilder fields={fields} onChange={setFields} />
           </section>
@@ -535,7 +676,22 @@ export function App() {
                 <span className="demo-kicker">FormAnswers</span>
                 <h2>{t.submittedAnswers}</h2>
               </div>
-              <span>{t.answers(submitted?.length ?? 0)}</span>
+              <div className="demo-section-heading__actions">
+                <span>{t.answers(submitted?.length ?? 0)}</span>
+                <button
+                  className="demo-copy"
+                  type="button"
+                  onClick={() =>
+                    setJsonModal({
+                      eyebrow: "FormAnswers",
+                      title: t.answersJson,
+                      value: submitted ?? [],
+                    })
+                  }
+                >
+                  {t.viewJson}
+                </button>
+              </div>
             </div>
             <p className="demo-answers-intro">
               {t.answersIntro}
@@ -552,27 +708,15 @@ export function App() {
           </section>
         )}
 
-        {tab === "json" && (
-          <section>
-            <div className="demo-section-heading">
-              <div>
-                <span className="demo-kicker">{t.portableContract}</span>
-                <h2>{t.jsonDefinition}</h2>
-              </div>
-              <button
-                className="demo-copy"
-                type="button"
-                onClick={() => void navigator.clipboard.writeText(JSON.stringify(fields, null, 2))}
-              >
-                {t.copyJson}
-              </button>
-            </div>
-            <pre className="demo-code">
-              <code>{JSON.stringify(fields, null, 2)}</code>
-            </pre>
-          </section>
-        )}
       </main>
+
+      {jsonModal && (
+        <JsonModal
+          content={jsonModal}
+          messages={t}
+          onClose={() => setJsonModal(null)}
+        />
+      )}
 
       <footer className="demo-footer">
         <span>react-form-builder</span>
