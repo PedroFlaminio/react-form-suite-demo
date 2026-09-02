@@ -1,6 +1,6 @@
-# Demo — React Form Builder
+# Demo — React Form Suite
 
-Aplicação de demonstração do pacote `react-form-builder`, criada com React, TypeScript e Vite.
+Aplicação de demonstração do pacote `react-form-suite`, criada com React, TypeScript e Vite.
 
 A interface permite:
 
@@ -31,7 +31,7 @@ Esse comando compila a biblioteca e inicia a demo em modo de desenvolvimento. O 
 
 ## Executar somente a demo
 
-Esta aplicação depende do pacote local localizado em `../packages/react-form-builder`. Com as dependências do workspace já instaladas:
+Esta aplicação depende do pacote local localizado em `../packages/react-form-suite`. Com as dependências do workspace já instaladas:
 
 ```bash
 cd demo
@@ -61,7 +61,7 @@ demo/
 └── vite.config.ts
 ```
 
-Durante o desenvolvimento, o alias configurado no Vite aponta `react-form-builder` diretamente para o código-fonte do pacote local. Assim, alterações na biblioteca podem ser testadas imediatamente na demo.
+Durante o desenvolvimento, o alias configurado no Vite aponta `react-form-suite` diretamente para o código-fonte do pacote local. Assim, alterações na biblioteca podem ser testadas imediatamente na demo.
 
 ## Gerar a versão de produção
 

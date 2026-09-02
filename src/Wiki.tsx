@@ -244,10 +244,10 @@ function useWikiText() {
   }
 }
 
-const installCode = `npm install react-form-builder`
+const installCode = `npm install react-form-suite`
 
 const builderCode = `import { useState } from "react"
-import { FormBuilder, type FormField } from "react-form-builder"
+import { FormBuilder, type FormField } from "react-form-suite"
 
 export function EditorDeFormulario() {
   const [fields, setFields] = useState<FormField[]>([])
@@ -268,7 +268,7 @@ import {
   type FormAnswer,
   type FormError,
   type FormField,
-} from "react-form-builder"
+} from "react-form-suite"
 
 export function MeuFormulario({ fields }: { fields: FormField[] }) {
   const [answers, setAnswers] = useState<FormAnswer[]>([])
@@ -294,7 +294,7 @@ export function MeuFormulario({ fields }: { fields: FormField[] }) {
   )
 }`
 
-const answersCode = `import { FormAnswers, type FormAnswer } from "react-form-builder"
+const answersCode = `import { FormAnswers, type FormAnswer } from "react-form-suite"
 
 export function Resumo({ answers }: { answers: FormAnswer[] }) {
   return (
@@ -367,15 +367,15 @@ const anonymousCode = `const errors = validateForm(answers, fields, true)
 />`
 
 const themeCode = `.formulario-da-marca {
-  --rfb-primary: #6d28d9;
-  --rfb-primary-dark: #5b21b6;
-  --rfb-primary-soft: #f3e8ff;
-  --rfb-danger: #b91c1c;
-  --rfb-border: #ddd6fe;
-  --rfb-text: #1f2937;
-  --rfb-surface: #ffffff;
-  --rfb-canvas: #fafafa;
-  --rfb-radius: 8px;
+  --rfs-primary: #6d28d9;
+  --rfs-primary-dark: #5b21b6;
+  --rfs-primary-soft: #f3e8ff;
+  --rfs-danger: #b91c1c;
+  --rfs-border: #ddd6fe;
+  --rfs-text: #1f2937;
+  --rfs-surface: #ffffff;
+  --rfs-canvas: #fafafa;
+  --rfs-radius: 8px;
 }`
 
 const themeUsageCode = `<FormRenderer
@@ -424,7 +424,7 @@ const localeCode = `import {
   ES_ES_LOCALE,
   FR_FR_LOCALE,
   type FormBuilderLocale,
-} from "react-form-builder"
+} from "react-form-suite"
 
 // Applies one locale to every library component below the provider.
 <FormBuilderLocaleProvider locale="es-ES">
@@ -1064,7 +1064,7 @@ function ComponentPage({
                 "Importe o componente e os tipos diretamente de ",
                 "Import the component and types directly from ",
               )}
-              <code>react-form-builder</code>.{" "}
+              <code>react-form-suite</code>.{" "}
               {text(
                 "O CSS já acompanha o entrypoint principal.",
                 "CSS is already included by the main entry point.",
@@ -1261,7 +1261,7 @@ export function Wiki() {
             <h3>{text("Primeiros passos", "Getting started")}</h3>
             <p>
               {text("O entrypoint principal já inclui o CSS da biblioteca. Se o seu bundler exigir uma importação explícita, use ", "The main entry point includes the library CSS. If your bundler requires an explicit import, use ")}
-              <code>import "react-form-builder/styles.css"</code>.
+              <code>import "react-form-suite/styles.css"</code>.
             </p>
 
             <h4>{text("1. Construa a definição", "1. Build the definition")}</h4>
@@ -1492,7 +1492,7 @@ export function Wiki() {
             <span className="wiki-section__number">07</span>
             <h3>{text("Personalização visual", "Visual customization")}</h3>
             <p>
-              {text("As classes internas usam o prefixo ", "Internal classes use the ")}<code>rfb-</code>
+              {text("As classes internas usam o prefixo ", "Internal classes use the ")}<code>rfs-</code>
               {text(" . Para temas, prefira sobrescrever as variáveis CSS em uma classe da sua aplicação.", " prefix. For themes, override the CSS variables in one of your application classes.")}
             </p>
             <CodeBlock code={themeCode} language="css" />

@@ -1422,17 +1422,17 @@ button {
   }
 }
 
-:root[data-theme="dark"] .rfb {
-  --rfb-primary: #7892f5;
-  --rfb-primary-dark: #91a6f8;
-  --rfb-primary-soft: #2d3c68;
-  --rfb-danger: #ff7c87;
-  --rfb-border: #394151;
-  --rfb-border-strong: #4a5466;
-  --rfb-text: #e7eaf1;
-  --rfb-muted: #9da6b7;
-  --rfb-surface: #1d222d;
-  --rfb-canvas: #161a22;
+:root[data-theme="dark"] .rfs {
+  --rfs-primary: #7892f5;
+  --rfs-primary-dark: #91a6f8;
+  --rfs-primary-soft: #2d3c68;
+  --rfs-danger: #ff7c87;
+  --rfs-border: #394151;
+  --rfs-border-strong: #4a5466;
+  --rfs-text: #e7eaf1;
+  --rfs-muted: #9da6b7;
+  --rfs-surface: #1d222d;
+  --rfs-canvas: #161a22;
 }
 
 :root[data-theme="dark"] .wiki {
@@ -1440,43 +1440,43 @@ button {
   --wiki-accent-soft: #29375f;
 }
 
-:root[data-theme="dark"] .rfb-canvas {
+:root[data-theme="dark"] .rfs-canvas {
   background:
     radial-gradient(circle at 1px 1px, #303747 1px, transparent 0) 0 0 / 20px 20px,
-    var(--rfb-canvas);
+    var(--rfs-canvas);
 }
 
-:root[data-theme="dark"] .rfb-field-card,
-:root[data-theme="dark"] .rfb-palette-item,
-:root[data-theme="dark"] .rfb-editor,
-:root[data-theme="dark"] .rfb-icon-button,
-:root[data-theme="dark"] .rfb-input {
-  background: var(--rfb-surface);
-  color: var(--rfb-text);
+:root[data-theme="dark"] .rfs-field-card,
+:root[data-theme="dark"] .rfs-palette-item,
+:root[data-theme="dark"] .rfs-editor,
+:root[data-theme="dark"] .rfs-icon-button,
+:root[data-theme="dark"] .rfs-input {
+  background: var(--rfs-surface);
+  color: var(--rfs-text);
 }
 
-:root[data-theme="dark"] .rfb-input:disabled,
-:root[data-theme="dark"] input.rfb-input:read-only,
-:root[data-theme="dark"] textarea.rfb-input:read-only {
+:root[data-theme="dark"] .rfs-input:disabled,
+:root[data-theme="dark"] input.rfs-input:read-only,
+:root[data-theme="dark"] textarea.rfs-input:read-only {
   background: #282e3a;
   color: #aeb6c5;
 }
 
-:root[data-theme="dark"] .rfb-renderer__label {
-  color: var(--rfb-text);
+:root[data-theme="dark"] .rfs-renderer__label {
+  color: var(--rfs-text);
 }
 
-:root[data-theme="dark"] .rfb-button--secondary {
+:root[data-theme="dark"] .rfs-button--secondary {
   background: #282e3a;
   color: #d9deea;
 }
 
-:root[data-theme="dark"] .rfb-button--ghost {
+:root[data-theme="dark"] .rfs-button--ghost {
   background: transparent;
-  color: var(--rfb-muted);
+  color: var(--rfs-muted);
 }
 
-:root[data-theme="dark"] .rfb-error-summary {
+:root[data-theme="dark"] .rfs-error-summary {
   border-color: #79434a;
   background: #382329;
   color: #ffb8bf;

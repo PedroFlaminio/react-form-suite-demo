@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 import type { ReactNode } from "react"
-import type { BuiltInLocale } from "react-form-builder"
+import type { BuiltInLocale } from "react-form-suite"
 
 export type DemoLocale = BuiltInLocale
 

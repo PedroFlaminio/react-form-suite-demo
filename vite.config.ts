@@ -5,8 +5,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "react-form-builder": new URL(
-        "../packages/react-form-builder/src/index.ts",
+      "react-form-suite": new URL(
+        "../packages/react-form-suite/src/index.ts",
         import.meta.url,
       ).pathname,
     },

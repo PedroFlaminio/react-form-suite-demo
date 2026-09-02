@@ -9,7 +9,7 @@ import {
   type FormAnswer,
   type FormError,
   type FormField,
-} from "react-form-builder"
+} from "react-form-suite"
 import { Wiki } from "./Wiki"
 import {
   DemoLocaleProvider,
@@ -401,7 +401,7 @@ function LanguageSelect({
 
 function getInitialTheme(): Theme {
   if (typeof window === "undefined") return "light"
-  const savedTheme = window.localStorage.getItem("rfb-demo-theme")
+  const savedTheme = window.localStorage.getItem("rfs-demo-theme")
   if (savedTheme === "light" || savedTheme === "dark") return savedTheme
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 }
@@ -413,7 +413,7 @@ function getInitialPage(): Page {
 
 function getInitialLocale(): DemoLocale {
   if (typeof window === "undefined") return "pt-BR"
-  const savedLocale = window.localStorage.getItem("rfb-demo-locale")
+  const savedLocale = window.localStorage.getItem("rfs-demo-locale")
   if (
     savedLocale === "pt-BR" ||
     savedLocale === "en-US" ||
@@ -448,12 +448,12 @@ export function App() {
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     document.documentElement.style.colorScheme = theme
-    window.localStorage.setItem("rfb-demo-theme", theme)
+    window.localStorage.setItem("rfs-demo-theme", theme)
   }, [theme])
 
   useEffect(() => {
     document.documentElement.lang = locale
-    window.localStorage.setItem("rfb-demo-locale", locale)
+    window.localStorage.setItem("rfs-demo-locale", locale)
   }, [locale])
 
   useEffect(() => {
@@ -505,9 +505,9 @@ export function App() {
       <div className="demo-shell demo-shell--wiki">
         <header className="wiki-page-header">
           <button className="wiki-brand" type="button" onClick={() => navigateTo("demo")}>
-            <span className="wiki-brand__mark">RFB</span>
+            <span className="wiki-brand__mark">RFS</span>
             <span>
-              <strong>react-form-builder</strong>
+              <strong>react-form-suite</strong>
               <small>{t.docsSubtitle}</small>
             </span>
           </button>
@@ -534,7 +534,7 @@ export function App() {
         </main>
 
         <footer className="demo-footer">
-          <span>react-form-builder</span>
+          <span>react-form-suite</span>
           <span>{t.footer}</span>
         </footer>
       </div>
@@ -719,7 +719,7 @@ export function App() {
       )}
 
       <footer className="demo-footer">
-        <span>react-form-builder</span>
+        <span>react-form-suite</span>
         <span>{t.footer}</span>
       </footer>
     </div>

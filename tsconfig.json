@@ -12,7 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "react-form-builder": ["../packages/react-form-builder/src/index.ts"]
+      "react-form-suite": ["../packages/react-form-suite/src/index.ts"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,
