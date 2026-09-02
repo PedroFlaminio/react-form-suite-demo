@@ -127,6 +127,8 @@ function DemoIcon({ children }: { children: ReactNode }) {
   return (
     <svg
       className="demo-icon"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -176,7 +178,7 @@ function CheckIcon() {
 function CountryFlag({ locale }: { locale: DemoLocale }) {
   if (locale === "pt-BR") {
     return (
-      <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+      <svg className="demo-flag" width="32" height="22" viewBox="0 0 32 22" aria-hidden="true">
         <rect width="32" height="22" fill="#229e45" />
         <path d="M16 3 29 11 16 19 3 11Z" fill="#ffdf38" />
         <circle cx="16" cy="11" r="5.2" fill="#2354a5" />
@@ -192,7 +194,7 @@ function CountryFlag({ locale }: { locale: DemoLocale }) {
 
   if (locale === "en-US") {
     return (
-      <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+      <svg className="demo-flag" width="32" height="22" viewBox="0 0 32 22" aria-hidden="true">
         <rect width="32" height="22" fill="#fff" />
         {[0, 4, 8, 12, 16, 20].map((y) => (
           <rect width="32" height="2" y={y} fill="#d83a46" key={y} />
@@ -209,7 +211,7 @@ function CountryFlag({ locale }: { locale: DemoLocale }) {
 
   if (locale === "es-ES") {
     return (
-      <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+      <svg className="demo-flag" width="32" height="22" viewBox="0 0 32 22" aria-hidden="true">
         <rect width="32" height="22" fill="#f4c430" />
         <rect width="32" height="5.5" fill="#c92b36" />
         <rect width="32" height="5.5" y="16.5" fill="#c92b36" />
@@ -220,7 +222,7 @@ function CountryFlag({ locale }: { locale: DemoLocale }) {
   }
 
   return (
-    <svg className="demo-flag" viewBox="0 0 32 22" aria-hidden="true">
+    <svg className="demo-flag" width="32" height="22" viewBox="0 0 32 22" aria-hidden="true">
       <rect width="32" height="22" fill="#fff" />
       <rect width="10.67" height="22" fill="#224a9b" />
       <rect x="21.33" width="10.67" height="22" fill="#e43d4c" />
@@ -342,6 +344,8 @@ function LanguageSelect({
         </span>
         <svg
           className={`demo-language-select__chevron${open ? " open" : ""}`}
+          width="20"
+          height="20"
           viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"

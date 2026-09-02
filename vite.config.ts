@@ -11,6 +11,13 @@ export default defineConfig(({ command, mode }) => {
       alias: useLocalLibrary
         ? [
             {
+              find: "react-form-suite/styles.css",
+              replacement: new URL(
+                "../packages/react-form-suite/src/styles.css",
+                import.meta.url,
+              ).pathname,
+            },
+            {
               find: "react-form-suite",
               replacement: new URL(
                 "../packages/react-form-suite/src/index.ts",
