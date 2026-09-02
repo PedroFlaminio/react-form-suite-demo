@@ -17,6 +17,7 @@ import {
   type DemoMessages,
   type DemoLocale,
 } from "./i18n"
+import { withBase } from "./routing"
 
 function getInitialFields(locale: DemoLocale): FormField[] {
   const text = getDemoMessages(locale).initialFields
@@ -478,7 +479,7 @@ export function App() {
   }, [jsonModal])
 
   const navigateTo = (nextPage: Page) => {
-    const nextPath = nextPage === "wiki" ? "/wiki" : "/"
+    const nextPath = nextPage === "wiki" ? withBase("/wiki") : withBase("/")
     window.history.pushState({}, "", nextPath)
     setPage(nextPage)
     window.scrollTo({ top: 0 })

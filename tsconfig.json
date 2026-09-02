@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "types": ["vite/client"],
     "paths": {
       "react-form-suite": ["../packages/react-form-suite/src/index.ts"]
     },

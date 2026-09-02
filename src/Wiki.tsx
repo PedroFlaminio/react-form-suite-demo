@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { MouseEvent, ReactNode } from "react"
 import { useDemoLocale, type DemoLocale } from "./i18n"
+import { withBase } from "./routing"
 
 const wikiSpanish: Record<string, string> = {
   "Copied!": "¡Copiado!",
@@ -778,7 +779,7 @@ function WikiLink({
   }
 
   return (
-    <a className={className} href={path} onClick={handleClick}>
+    <a className={className} href={withBase(path)} onClick={handleClick}>
       {children}
     </a>
   )
@@ -1203,8 +1204,8 @@ export function Wiki() {
   }, [])
 
   const navigate = (nextRoute: WikiRoute) => {
-    const nextPath = nextRoute === "overview" ? "/wiki" : `/wiki/${nextRoute}`
-    window.history.pushState({}, "", nextPath)
+    const path = nextRoute === "overview" ? "/wiki" : `/wiki/${nextRoute}`
+    window.history.pushState({}, "", withBase(path))
     setRoute(nextRoute)
     window.scrollTo({ top: 0 })
   }

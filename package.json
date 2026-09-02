@@ -4,14 +4,16 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -p tsconfig.json && vite build",
-    "check": "tsc -p tsconfig.json --pretty false"
+    "dev": "vite --mode workspace",
+    "dev:package": "vite",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "check": "tsc -p tsconfig.json --pretty false",
+    "check:package": "tsc -p tsconfig.build.json --pretty false"
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-form-suite": "file:../packages/react-form-suite"
+    "react-form-suite": "^0.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.8",
