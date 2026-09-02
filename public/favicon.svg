@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient: Deep Brand Indigo/Royal Blue -->
+    <linearGradient id="rfsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="45%" stop-color="#254bdb" />
+      <stop offset="100%" stop-color="#1d3bb8" />
+    </linearGradient>
+
+    <!-- Card Gradient -->
+    <linearGradient id="rfsCard" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+
+    <!-- Checkbox Gradient -->
+    <linearGradient id="rfsCheck" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+
+    <!-- Action Button Gradient -->
+    <linearGradient id="rfsBtn" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3157d5" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+
+    <!-- Builder Badge Gradient -->
+    <linearGradient id="rfsBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="rfsCardShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0f172a" flood-opacity="0.28" />
+    </filter>
+    <filter id="rfsBadgeShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.32" />
+    </filter>
+  </defs>
+
+  <!-- Base Squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#rfsBg)" />
+  <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.25" />
+
+  <!-- Form Sheet (White Card) -->
+  <g filter="url(#rfsCardShadow)">
+    <rect x="68" y="56" width="376" height="400" rx="44" fill="url(#rfsCard)" />
+    
+    <!-- Top Form Header -->
+    <rect x="112" y="102" width="148" height="28" rx="14" fill="#3157d5" />
+    <rect x="274" y="110" width="64" height="12" rx="6" fill="#cbd5e1" />
+
+    <!-- Row 1: Checkbox Field -->
+    <rect x="112" y="156" width="64" height="64" rx="18" fill="url(#rfsCheck)" />
+    <path d="M127 188 l10 10 20 -20" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="194" y="172" width="202" height="32" rx="16" fill="#1e293b" />
+
+    <!-- Row 2: Radio Group Field -->
+    <circle cx="144" cy="270" r="32" fill="#eff6ff" stroke="#3157d5" stroke-width="8" />
+    <circle cx="144" cy="270" r="16" fill="#3157d5" />
+    <rect x="194" y="254" width="164" height="32" rx="16" fill="#475569" />
+
+    <!-- Row 3: Submit Button -->
+    <rect x="112" y="342" width="288" height="62" rx="20" fill="url(#rfsBtn)" />
+    <rect x="192" y="367" width="96" height="12" rx="6" fill="#ffffff" />
+  </g>
+
+  <!-- Builder Accent Badge (Floating Pencil) -->
+  <g filter="url(#rfsBadgeShadow)">
+    <circle cx="384" cy="384" r="52" fill="url(#rfsBadge)" stroke="#ffffff" stroke-width="6" />
+    <g transform="translate(360, 360) scale(2)">
+      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" fill="#ffffff" />
+      <path d="m14 6 4 4" stroke="#d97706" stroke-width="1.2" stroke-linecap="round" />
+      <path d="M3 20 l1 -4 3 3 Z" fill="#d97706" />
+    </g>
+  </g>
+</svg>
